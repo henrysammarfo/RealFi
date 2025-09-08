@@ -1,0 +1,25 @@
+{
+  "name": "realfi-contracts",
+  "version": "1.0.0",
+  "description": "RealFi DeFi Platform Smart Contracts for Somnia Network",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "test:live": "hardhat test --network somnia-testnet",
+    "deploy": "hardhat run scripts/deploy.js --network somnia-testnet",
+    "deploy:local": "hardhat run scripts/deploy.js --network hardhat",
+    "verify": "hardhat run scripts/verify.js --network somnia-testnet",
+    "node": "hardhat node",
+    "clean": "hardhat clean"
+  },
+  "keywords": ["defi", "somnia", "yield-farming", "cross-chain", "ai-strategies"],
+  "author": "RealFi Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "@openzeppelin/contracts": "^5.4.0",
+    "@openzeppelin/contracts-upgradeable": "^5.4.0",
+    "hardhat": "^3.0.4"
+  }
+}
