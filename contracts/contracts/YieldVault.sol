@@ -4,9 +4,9 @@ pragma solidity ^0.8.22;
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 /**
  * @title YieldVault
@@ -14,7 +14,7 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeab
  * @notice This contract handles deposits, withdrawals, yield calculations, and battle mechanics
  */
 contract YieldVault is Initializable, UUPSUpgradeable, OwnableUpgradeable, ReentrancyGuardUpgradeable {
-    using SafeERC20Upgradeable for IERC20Upgradeable;
+    using SafeERC20 for IERC20;
     
     struct VaultPosition {
         uint256 amount;
@@ -54,7 +54,7 @@ contract YieldVault is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reent
     mapping(address => uint256) public userTotalWithdrawals;
     mapping(address => uint256) public userTotalYield;
     
-    IERC20Upgradeable public token;
+    IERC20 public token;
     address public userProfileContract;
     
     uint256 public nextBattleId;
@@ -86,12 +86,11 @@ contract YieldVault is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reent
         address _token,
         address _userProfileContract
     ) public initializer {
-        __Ownable_init();
+        __Ownable_init(_owner);
         __UUPSUpgradeable_init();
         __ReentrancyGuard_init();
-        _transferOwnership(_owner);
         
-        token = IERC20Upgradeable(_token);
+        token = IERC20(_token);
         userProfileContract = _userProfileContract;
         nextBattleId = 1;
     }

@@ -1,4 +1,6 @@
 require("@nomicfoundation/hardhat-toolbox");
+require("@openzeppelin/hardhat-upgrades");
+require("dotenv").config();
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -16,8 +18,8 @@ module.exports = {
       chainId: 1337,
     },
     "somnia-testnet": {
-      url: "https://testnet.somnia.network",
-      chainId: 0x1A4, // 420 - Update with actual Somnia Testnet chain ID
+      url: "https://dream-rpc.somnia.network",
+      chainId: 50312, // Somnia Testnet chain ID
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
       gasPrice: 20000000000, // 20 gwei
     },

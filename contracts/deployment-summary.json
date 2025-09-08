@@ -1,0 +1,18 @@
+{
+  "network": "somnia-testnet",
+  "chainId": 50312,
+  "rpcUrl": "https://dream-rpc.somnia.network",
+  "deployer": "0x2F914bcbAD5bf4967BbB11e4372200b7c7594AEB",
+  "timestamp": "2025-09-08T12:00:00.000Z",
+  "status": "complete",
+  "deployedContracts": {
+    "RealFiToken": "0x8c73284b55cb55EB46Dd42617bA6213037e602e9",
+    "UserProfile": "0x41d87298B54d329872c29ec385367cD4C404e8e6",
+    "YieldVault": "0x2ABa80F8931d52DEE8e6732d213eabe795535660",
+    "Leaderboard": "0x5D3235c4eB39f5c3729e75932D62E40f77D8e70f",
+    "CrossChainBridge": "0x9F54700Ae37615C4D751FEE27138A1Cc4276e43d",
+    "AIStrategy": "0x809303cC124eABCDa2c6aFF9eefEd30EB662362a"
+  },
+  "explorerUrl": "https://shannon-explorer.somnia.network",
+  "notes": "All 6 contracts deployed successfully! RealFi is fully live on Somnia Testnet."
+}

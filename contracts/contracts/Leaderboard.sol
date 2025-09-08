@@ -4,7 +4,7 @@ pragma solidity ^0.8.22;
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
 /**
  * @title Leaderboard
@@ -73,10 +73,9 @@ contract Leaderboard is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reen
         address _yieldVaultContract,
         address _userProfileContract
     ) public initializer {
-        __Ownable_init();
+        __Ownable_init(_owner);
         __UUPSUpgradeable_init();
         __ReentrancyGuard_init();
-        _transferOwnership(_owner);
         
         yieldVaultContract = _yieldVaultContract;
         userProfileContract = _userProfileContract;

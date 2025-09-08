@@ -1,0 +1,9 @@
+{
+  "network": "somnia-testnet",
+  "chainId": 50312,
+  "deployer": "0x2F914bcbAD5bf4967BbB11e4372200b7c7594AEB",
+  "timestamp": "2025-09-08T17:29:04.059Z",
+  "contracts": {
+    "AIStrategy": "0x809303cC124eABCDa2c6aFF9eefEd30EB662362a"
+  }
+}

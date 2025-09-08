@@ -4,9 +4,9 @@ pragma solidity ^0.8.22;
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 /**
  * @title CrossChainBridge
@@ -14,7 +14,7 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeab
  * @notice This contract handles bridging assets between ETH, MATIC, and BSC networks
  */
 contract CrossChainBridge is Initializable, UUPSUpgradeable, OwnableUpgradeable, ReentrancyGuardUpgradeable {
-    using SafeERC20Upgradeable for IERC20Upgradeable;
+    using SafeERC20 for IERC20;
     
     enum ChainId {
         ETHEREUM,
@@ -109,10 +109,9 @@ contract CrossChainBridge is Initializable, UUPSUpgradeable, OwnableUpgradeable,
      * @param _owner The address of the contract owner
      */
     function initialize(address _owner) public initializer {
-        __Ownable_init();
+        __Ownable_init(_owner);
         __UUPSUpgradeable_init();
         __ReentrancyGuard_init();
-        _transferOwnership(_owner);
         
         nextRequestId = 1;
         _initializeChainConfigs();
@@ -188,7 +187,7 @@ contract CrossChainBridge is Initializable, UUPSUpgradeable, OwnableUpgradeable,
         require(_amount <= targetConfig.maxBridgeAmount, "Amount above maximum for target chain");
         
         // Transfer tokens from user
-        IERC20Upgradeable(_token).safeTransferFrom(msg.sender, address(this), _amount);
+        IERC20(_token).safeTransferFrom(msg.sender, address(this), _amount);
         
         // Calculate bridge fee
         uint256 bridgeFee = (_amount * targetConfig.bridgeFee) / 10000;
@@ -271,7 +270,7 @@ contract CrossChainBridge is Initializable, UUPSUpgradeable, OwnableUpgradeable,
         require(_amount > 0, "Invalid amount");
         
         // Transfer tokens to user
-        IERC20Upgradeable(_token).safeTransfer(_user, _amount);
+        IERC20(_token).safeTransfer(_user, _amount);
         
         // Update user chain balance
         userChainBalances[_user][ChainId.SOMNIA] += _amount;
@@ -455,8 +454,8 @@ contract CrossChainBridge is Initializable, UUPSUpgradeable, OwnableUpgradeable,
      * @param _amount The amount to withdraw
      */
     function emergencyWithdraw(address _token, uint256 _amount) external onlyOwner {
-        require(_amount <= IERC20Upgradeable(_token).balanceOf(address(this)), "Insufficient balance");
-        IERC20Upgradeable(_token).safeTransfer(owner(), _amount);
+        require(_amount <= IERC20(_token).balanceOf(address(this)), "Insufficient balance");
+        IERC20(_token).safeTransfer(owner(), _amount);
     }
     
     /**

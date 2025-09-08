@@ -4,7 +4,7 @@ pragma solidity ^0.8.22;
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
 /**
  * @title AIStrategy
@@ -121,10 +121,9 @@ contract AIStrategy is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reent
      * @param _owner The address of the contract owner
      */
     function initialize(address _owner) public initializer {
-        __Ownable_init();
+        __Ownable_init(_owner);
         __UUPSUpgradeable_init();
         __ReentrancyGuard_init();
-        _transferOwnership(_owner);
         
         nextStrategyId = 1;
         _initializeDefaultStrategies();
@@ -437,13 +436,13 @@ contract AIStrategy is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reent
     ) {
         // Analyze user's historical performance
         uint256 userPerformance = userTotalPerformance[_user];
-        uint256 userStrategyCount = userStrategyCount[_user];
+        uint256 userStrategyCountValue = userStrategyCount[_user];
         
         // Calculate confidence based on user history
-        if (userStrategyCount == 0) {
+        if (userStrategyCountValue == 0) {
             confidence = 60; // Lower confidence for new users
         } else {
-            confidence = 70 + (userPerformance / userStrategyCount) / 10; // Higher confidence for experienced users
+            confidence = 70 + (userPerformance / userStrategyCountValue) / 10; // Higher confidence for experienced users
             if (confidence > 95) confidence = 95;
         }
         
@@ -491,7 +490,7 @@ contract AIStrategy is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reent
      * @return Random value between min and max
      */
     function _generateRandomValue(uint256 _min, uint256 _max) internal view returns (uint256) {
-        return _min + (uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty, msg.sender))) % (_max - _min + 1));
+        return _min + (uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao, msg.sender))) % (_max - _min + 1));
     }
     
     /**

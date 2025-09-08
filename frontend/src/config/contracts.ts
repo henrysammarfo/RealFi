@@ -2,10 +2,10 @@
 // Update these addresses after deploying to Somnia Testnet
 
 export const SOMNIA_NETWORK = {
-  chainId: 420, // Update with actual Somnia Testnet chain ID
+  chainId: 50312, // Somnia Testnet chain ID
   chainName: 'Somnia Testnet',
-  rpcUrls: ['https://testnet.somnia.network'],
-  blockExplorerUrls: ['https://testnet-explorer.somnia.network'],
+  rpcUrls: ['https://dream-rpc.somnia.network'],
+  blockExplorerUrls: ['https://shannon-explorer.somnia.network'],
   nativeCurrency: {
     name: 'Somnia',
     symbol: 'SOM',
@@ -15,12 +15,12 @@ export const SOMNIA_NETWORK = {
 
 // Contract addresses - will be populated after deployment
 export const CONTRACT_ADDRESSES = {
-  RealFiToken: process.env.REACT_APP_REALFI_TOKEN_ADDRESS || '',
-  UserProfile: process.env.REACT_APP_USER_PROFILE_ADDRESS || '',
-  YieldVault: process.env.REACT_APP_YIELD_VAULT_ADDRESS || '',
-  Leaderboard: process.env.REACT_APP_LEADERBOARD_ADDRESS || '',
-  CrossChainBridge: process.env.REACT_APP_CROSS_CHAIN_BRIDGE_ADDRESS || '',
-  AIStrategy: process.env.REACT_APP_AI_STRATEGY_ADDRESS || '',
+  RealFiToken: process.env.REACT_APP_REALFI_TOKEN_ADDRESS || '0x8c73284b55cb55EB46Dd42617bA6213037e602e9',
+  UserProfile: process.env.REACT_APP_USER_PROFILE_ADDRESS || '0x41d87298B54d329872c29ec385367cD4C404e8e6',
+  YieldVault: process.env.REACT_APP_YIELD_VAULT_ADDRESS || '0x2ABa80F8931d52DEE8e6732d213eabe795535660',
+  Leaderboard: process.env.REACT_APP_LEADERBOARD_ADDRESS || '0x5D3235c4eB39f5c3729e75932D62E40f77D8e70f',
+  CrossChainBridge: process.env.REACT_APP_CROSS_CHAIN_BRIDGE_ADDRESS || '0x9F54700Ae37615C4D751FEE27138A1Cc4276e43d',
+  AIStrategy: process.env.REACT_APP_AI_STRATEGY_ADDRESS || '0x809303cC124eABCDa2c6aFF9eefEd30EB662362a',
 };
 
 // Contract ABIs - these will be generated from the compiled contracts
