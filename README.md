@@ -79,15 +79,16 @@ RealFi/
 ### Somnia Testnet Configuration
 
 - **Network Name**: Somnia Testnet
-- **RPC URL**: `https://testnet.somnia.network`
-- **Chain ID**: `TBD` (Update with actual Somnia Testnet chain ID)
-- **Block Explorer**: `https://testnet-explorer.somnia.network`
+- **RPC URL**: `https://dream-rpc.somnia.network`
+- **Chain ID**: `50312`
+- **Block Explorer**: `https://shannon-explorer.somnia.network`
 
 ### Deploy Contracts
 
 1. **Get testnet funds**
    - Visit Somnia Testnet Faucet: `https://faucet.somnia.network`
    - Request testnet tokens for deployment
+   - Add Somnia Testnet to MetaMask with the configuration above
 
 2. **Deploy to Somnia Testnet**
    ```bash
@@ -102,14 +103,34 @@ RealFi/
 ### Contract Addresses (Live on Somnia Testnet)
 
 ```
-UserProfile: 0x...
-YieldVault: 0x...
-Leaderboard: 0x...
-CrossChainBridge: 0x...
-AIStrategy: 0x...
+RealFiToken: 0x8c73284b55cb55EB46Dd42617bA6213037e602e9
+UserProfile: 0x41d87298B54d329872c29ec385367cD4C404e8e6
+YieldVault: 0x2ABa80F8931d52DEE8e6732d213eabe795535660
+Leaderboard: 0x5D3235c4eB39f5c3729e75932D62E40f77D8e70f
+CrossChainBridge: 0x9F54700Ae37615C4D751FEE27138A1Cc4276e43d
+AIStrategy: 0x809303cC124eABCDa2c6aFF9eefEd30EB662362a
 ```
 
-*Contract addresses will be populated after deployment*
+**Status**: All contracts successfully deployed and verified on Somnia Testnet
+
+### Deployment Status
+
+- ✅ **RealFiToken**: Deployed and verified
+- ✅ **UserProfile**: Deployed and verified  
+- ✅ **YieldVault**: Deployed and verified
+- ✅ **Leaderboard**: Deployed and verified
+- ✅ **CrossChainBridge**: Deployed and verified
+- ✅ **AIStrategy**: Deployed and verified
+
+**Total**: 6/6 contracts deployed successfully
+
+**Explorer Links**:
+- [RealFiToken](https://shannon-explorer.somnia.network/address/0x8c73284b55cb55EB46Dd42617bA6213037e602e9)
+- [UserProfile](https://shannon-explorer.somnia.network/address/0x41d87298B54d329872c29ec385367cD4C404e8e6)
+- [YieldVault](https://shannon-explorer.somnia.network/address/0x2ABa80F8931d52DEE8e6732d213eabe795535660)
+- [Leaderboard](https://shannon-explorer.somnia.network/address/0x5D3235c4eB39f5c3729e75932D62E40f77D8e70f)
+- [CrossChainBridge](https://shannon-explorer.somnia.network/address/0x9F54700Ae37615C4D751FEE27138A1Cc4276e43d)
+- [AIStrategy](https://shannon-explorer.somnia.network/address/0x809303cC124eABCDa2c6aFF9eefEd30EB662362a)
 
 ## 🎮 Usage
 
@@ -123,6 +144,7 @@ AIStrategy: 0x...
 
 2. **Connect your wallet**
    - Open MetaMask
+   - Add Somnia Testnet (Chain ID: 50312, RPC: https://dream-rpc.somnia.network)
    - Switch to Somnia Testnet
    - Connect to the application
 
@@ -134,7 +156,7 @@ AIStrategy: 0x...
 4. **Cross-Chain Operations**
    - Bridge assets between supported networks
    - Monitor transaction status
-   - View on Somnia Explorer
+   - View on Shannon Explorer: https://shannon-explorer.somnia.network
 
 ### Smart Contract Interaction
 
