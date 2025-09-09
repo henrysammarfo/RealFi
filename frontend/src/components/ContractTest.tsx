@@ -13,6 +13,10 @@ const ContractTest: React.FC = () => {
     setLoading(true);
     const results: any = {};
 
+    // First, check which contract addresses are being used
+    const { CONTRACT_ADDRESSES } = await import('../config/contracts');
+    results.contractAddresses = CONTRACT_ADDRESSES;
+
     try {
       // Test 1: Get total stats
       console.log('Testing getTotalStats...');
