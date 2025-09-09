@@ -24,14 +24,8 @@ const TokenFaucet: React.FC<TokenFaucetProps> = ({ className = '' }) => {
       setError(null);
       setSuccess(null);
 
-      // Mint RFT tokens to user's address
-      const tokenContract = contractService.getContract('RealFiToken');
-      if (!tokenContract) {
-        throw new Error('RealFiToken contract not available');
-      }
-
-      const amountWei = contractService.parseAmount(mintAmount);
-      const tx = await tokenContract.mint(account, amountWei);
+      // Mint RFT tokens using public mint function
+      const tx = await contractService.publicMint(mintAmount);
       const receipt = await contractService.waitForTransaction(tx.hash);
       
       setSuccess(`Successfully minted ${mintAmount} RFT tokens! Transaction: ${receipt.hash}`);

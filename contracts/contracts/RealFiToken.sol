@@ -29,6 +29,16 @@ contract RealFiToken is ERC20, Ownable {
     }
     
     /**
+     * @dev Public mint function for users (with limits)
+     * @param amount The amount to mint (max 10000 tokens per mint)
+     */
+    function publicMint(uint256 amount) external {
+        require(amount <= 10000 * 10**18, "Max 10000 tokens per mint");
+        require(totalSupply() + amount <= MAX_SUPPLY, "Exceeds max supply");
+        _mint(msg.sender, amount);
+    }
+    
+    /**
      * @dev Burn tokens
      * @param amount The amount to burn
      */

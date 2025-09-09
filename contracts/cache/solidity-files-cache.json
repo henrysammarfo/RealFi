@@ -974,8 +974,8 @@
       ]
     },
     "C:\\Users\\ez\\Desktop\\RealFi\\contracts\\contracts\\RealFiToken.sol": {
-      "lastModificationDate": 1757331334522,
-      "contentHash": "ced1aafa5fc1eaf7231d4fa66398b373",
+      "lastModificationDate": 1757426725741,
+      "contentHash": "72b3a24bbb772e976e154a678b6cdda5",
       "sourceName": "contracts/RealFiToken.sol",
       "solcConfig": {
         "version": "0.8.22",

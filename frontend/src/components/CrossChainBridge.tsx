@@ -27,7 +27,7 @@ const CrossChainBridge: React.FC<CrossChainBridgeProps> = ({ className = '' }) =
   const [success, setSuccess] = useState<string | null>(null);
   const [bridgeAmount, setBridgeAmount] = useState('');
   const [targetChain, setTargetChain] = useState<number>(CHAIN_IDS.ETHEREUM);
-  const [tokenAddress, setTokenAddress] = useState('0x2758270ED3b61a49dee09485FE659a753c772086');
+  const [tokenAddress, setTokenAddress] = useState('0x8a3302773939f504074098f3F268Ae019F70f4c3');
 
   useEffect(() => {
     if (isConnected && account) {

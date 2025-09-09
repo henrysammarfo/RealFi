@@ -92,6 +92,14 @@ class ContractServiceClass implements ContractService {
     return await contract.approve(spender, amountWei);
   }
 
+  async publicMint(amount: string): Promise<ethers.TransactionResponse> {
+    const contract = this.getContract('RealFiToken');
+    if (!contract) throw new Error('RealFiToken contract not available');
+    
+    const amountWei = ethers.parseEther(amount);
+    return await contract.publicMint(amountWei);
+  }
+
   async transferToken(to: string, amount: string): Promise<ethers.TransactionResponse> {
     const contract = this.getContract('RealFiToken');
     if (!contract) throw new Error('RealFiToken contract not available');
