@@ -80,7 +80,7 @@ const AIStrategies: React.FC<AIStrategiesProps> = ({ className = '' }) => {
             maxDeposit: strategyData.maxDeposit || 0,
             duration: strategyData.duration || 0,
             successRate: strategyData.successRate || 0,
-            isActive: strategyData.isActive === true || strategyData.isActive === 1 || strategyData.isActive === 1n,
+            isActive: strategyData.isActive === true || strategyData.isActive === 1 || strategyData.isActive === BigInt(1),
             totalAdopted: strategyData.totalAdopted || 0,
             totalReturn: strategyData.totalReturn || 0
           });
