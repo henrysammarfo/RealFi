@@ -61,7 +61,7 @@ contract YieldVault is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reent
     uint256 public totalVaultValue;
     uint256 public totalYieldDistributed;
     uint256 public constant YIELD_RATE = 5; // 5% APY
-    uint256 public constant BATTLE_DURATION = 7 days;
+    uint256 public constant BATTLE_DURATION = 1 days; // Reduced from 7 days to 1 day
     uint256 public constant MIN_DEPOSIT = 0.01 ether;
     uint256 public constant MAX_DEPOSIT = 100 ether;
     

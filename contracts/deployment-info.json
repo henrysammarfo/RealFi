@@ -2,13 +2,13 @@
   "network": "somnia-testnet",
   "chainId": 420,
   "deployer": "0x2F914bcbAD5bf4967BbB11e4372200b7c7594AEB",
-  "timestamp": "2025-09-09T14:07:20.093Z",
+  "timestamp": "2025-09-09T17:51:30.738Z",
   "contracts": {
-    "RealFiToken": "0x8a3302773939f504074098f3F268Ae019F70f4c3",
-    "UserProfile": "0xF921135854b21B6bCE0292833d960b87cbd35980",
-    "YieldVault": "0x4792A15f7d4D63582EF483EfB9A3963CE2855346",
-    "Leaderboard": "0xab978B200e99b1Cd110D62a4731086ce7a0D1FA4",
-    "CrossChainBridge": "0xe7BF4b43B84a07d122Df86E9119bdb62B350e2Bd",
-    "AIStrategy": "0xfD4CdB992a478f885580aFA464d38114465A93a4"
+    "RealFiToken": "0xd054617a413a7B3e4d401799572AE378C283C91f",
+    "UserProfile": "0x2525bd88ccf6F0765B819B0bb1F4D71E543F62D4",
+    "YieldVault": "0xC2852Dac15Ec1FdA7697c06FcE436DaEA98ac799",
+    "Leaderboard": "0x2F9138f110298F61ff2484C71ab2029D2eAe193A",
+    "CrossChainBridge": "0x8F72b9C47b8E5354a0CD3238Cc175f69dCCa1585",
+    "AIStrategy": "0x526df3F081aF7Cd3410b7c5A10CB54B4D1FA6996"
   }
 }

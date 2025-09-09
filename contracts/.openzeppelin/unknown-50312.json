@@ -75,6 +75,31 @@
       "address": "0xfD4CdB992a478f885580aFA464d38114465A93a4",
       "txHash": "0xa3514b4d33770e21c28beaec3523bb187580f714ba8c80112ae2f7c79a736b81",
       "kind": "uups"
+    },
+    {
+      "address": "0x2525bd88ccf6F0765B819B0bb1F4D71E543F62D4",
+      "txHash": "0xa133b911769cadf616dbd8efe4621572bbb555163443a17844ca05b31f4412ec",
+      "kind": "uups"
+    },
+    {
+      "address": "0xC2852Dac15Ec1FdA7697c06FcE436DaEA98ac799",
+      "txHash": "0x95b81978d31f91024935914a26c9739311e32b3cfdfdc63bde2e87ec68e13767",
+      "kind": "uups"
+    },
+    {
+      "address": "0x2F9138f110298F61ff2484C71ab2029D2eAe193A",
+      "txHash": "0x99129cc8387d41f7800a3b2137b08a263fc55815d266580198ae5c3e293713b9",
+      "kind": "uups"
+    },
+    {
+      "address": "0x8F72b9C47b8E5354a0CD3238Cc175f69dCCa1585",
+      "txHash": "0xd54aa92860f4cf6017ad8eed9a6f9b0c511abaeaa79f6af4c7cec28503952471",
+      "kind": "uups"
+    },
+    {
+      "address": "0x526df3F081aF7Cd3410b7c5A10CB54B4D1FA6996",
+      "txHash": "0xe47864d2ac0042811c1838d1408da54b6bf135fb5ad086f563699e3cb2f4b495",
+      "kind": "uups"
     }
   ],
   "impls": {
@@ -1598,6 +1623,327 @@
     "439853f35cff28b5d58e27093296ca1cce9782a4fbf06bf3e601acce4494c89f": {
       "address": "0x64C1708e098aaF555320CBd24aFc7E8FaA706859",
       "txHash": "0x872f7b1d2307281b8c45e6acb19deaf30cb308307ef23b766382f387a7cb74a9",
+      "layout": {
+        "solcVersion": "0.8.22",
+        "storage": [
+          {
+            "label": "userPositions",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_mapping(t_address,t_struct(VaultPosition)2236_storage)",
+            "contract": "YieldVault",
+            "src": "contracts\\YieldVault.sol:51"
+          },
+          {
+            "label": "battles",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_mapping(t_uint256,t_struct(Battle)2263_storage)",
+            "contract": "YieldVault",
+            "src": "contracts\\YieldVault.sol:52"
+          },
+          {
+            "label": "userTotalDeposits",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "YieldVault",
+            "src": "contracts\\YieldVault.sol:53"
+          },
+          {
+            "label": "userTotalWithdrawals",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "YieldVault",
+            "src": "contracts\\YieldVault.sol:54"
+          },
+          {
+            "label": "userTotalYield",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "YieldVault",
+            "src": "contracts\\YieldVault.sol:55"
+          },
+          {
+            "label": "token",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_contract(IERC20)1322",
+            "contract": "YieldVault",
+            "src": "contracts\\YieldVault.sol:57"
+          },
+          {
+            "label": "userProfileContract",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_address",
+            "contract": "YieldVault",
+            "src": "contracts\\YieldVault.sol:58"
+          },
+          {
+            "label": "nextBattleId",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_uint256",
+            "contract": "YieldVault",
+            "src": "contracts\\YieldVault.sol:60"
+          },
+          {
+            "label": "totalVaultValue",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_uint256",
+            "contract": "YieldVault",
+            "src": "contracts\\YieldVault.sol:61"
+          },
+          {
+            "label": "totalYieldDistributed",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_uint256",
+            "contract": "YieldVault",
+            "src": "contracts\\YieldVault.sol:62"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)73_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)13_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(ReentrancyGuardStorage)226_storage": {
+            "label": "struct ReentrancyGuardUpgradeable.ReentrancyGuardStorage",
+            "members": [
+              {
+                "label": "_status",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_contract(IERC20)1322": {
+            "label": "contract IERC20",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(VaultPosition)2236_storage)": {
+            "label": "mapping(address => struct YieldVault.VaultPosition)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Battle)2263_storage)": {
+            "label": "mapping(uint256 => struct YieldVault.Battle)",
+            "numberOfBytes": "32"
+          },
+          "t_string_storage": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_struct(Battle)2263_storage": {
+            "label": "struct YieldVault.Battle",
+            "members": [
+              {
+                "label": "battleId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "name",
+                "type": "t_string_storage",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "startTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "endTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "totalPrizePool",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "entryFee",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "maxParticipants",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "currentParticipants",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "isActive",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "8"
+              },
+              {
+                "label": "participants",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "9"
+              },
+              {
+                "label": "participantDeposits",
+                "type": "t_mapping(t_address,t_uint256)",
+                "offset": 0,
+                "slot": "10"
+              }
+            ],
+            "numberOfBytes": "352"
+          },
+          "t_struct(VaultPosition)2236_storage": {
+            "label": "struct YieldVault.VaultPosition",
+            "members": [
+              {
+                "label": "amount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "depositTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "lastClaimTime",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "battleId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "isActive",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "4"
+              }
+            ],
+            "numberOfBytes": "160"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.ReentrancyGuard": [
+            {
+              "contract": "ReentrancyGuardUpgradeable",
+              "label": "_status",
+              "type": "t_uint256",
+              "src": "@openzeppelin\\contracts-upgradeable\\utils\\ReentrancyGuardUpgradeable.sol:43",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "99d889c71d85b63ffc215430652270dae60cf6998879febeaf2ac0e8f046f999": {
+      "address": "0xfeD315A504180edD5394ef287D47E8c1e9A8C938",
+      "txHash": "0x388b80e75752480773fb8850d216154c0473c18ae996eac8963f0aee4eef75a3",
       "layout": {
         "solcVersion": "0.8.22",
         "storage": [

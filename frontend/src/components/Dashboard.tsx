@@ -220,9 +220,9 @@ const Dashboard: React.FC = () => {
               <div className="mt-4 text-xs text-gray-400">
                 <p>Live Contract Addresses:</p>
                 <div className="flex flex-wrap justify-center gap-4 mt-2">
-                  <span>RealFiToken: {contractService.formatAddress('0x8a3302773939f504074098f3F268Ae019F70f4c3')}</span>
-                  <span>UserProfile: {contractService.formatAddress('0xF921135854b21B6bCE0292833d960b87cbd35980')}</span>
-                  <span>YieldVault: {contractService.formatAddress('0x4792A15f7d4D63582EF483EfB9A3963CE2855346')}</span>
+                  <span>RealFiToken: {contractService.formatAddress('0xd054617a413a7B3e4d401799572AE378C283C91f')}</span>
+                  <span>UserProfile: {contractService.formatAddress('0x2525bd88ccf6F0765B819B0bb1F4D71E543F62D4')}</span>
+                  <span>YieldVault: {contractService.formatAddress('0xC2852Dac15Ec1FdA7697c06FcE436DaEA98ac799')}</span>
                 </div>
               </div>
             </div>

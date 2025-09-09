@@ -27,7 +27,7 @@ const CrossChainBridge: React.FC<CrossChainBridgeProps> = ({ className = '' }) =
   const [success, setSuccess] = useState<string | null>(null);
   const [bridgeAmount, setBridgeAmount] = useState('');
   const [targetChain, setTargetChain] = useState<number>(CHAIN_IDS.ETHEREUM);
-  const [tokenAddress, setTokenAddress] = useState('0x8a3302773939f504074098f3F268Ae019F70f4c3');
+  const [tokenAddress, setTokenAddress] = useState('0xd054617a413a7B3e4d401799572AE378C283C91f');
 
   useEffect(() => {
     if (isConnected && account) {
@@ -86,7 +86,8 @@ const CrossChainBridge: React.FC<CrossChainBridgeProps> = ({ className = '' }) =
       setSuccess(null);
 
       // First approve tokens for bridge contract
-      const approveTx = await contractService.approveToken(tokenAddress, bridgeAmount);
+      const bridgeContractAddress = '0x8F72b9C47b8E5354a0CD3238Cc175f69dCCa1585';
+      const approveTx = await contractService.approveToken(bridgeContractAddress, bridgeAmount);
       await contractService.waitForTransaction(approveTx.hash);
 
       // Then create bridge request

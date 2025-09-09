@@ -37,6 +37,11 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
   const [battles, setBattles] = useState<Battle[]>([]);
   const [userPosition, setUserPosition] = useState<UserPosition | null>(null);
   const [loading, setLoading] = useState(false);
+  const [depositLoading, setDepositLoading] = useState(false);
+  const [joinLoading, setJoinLoading] = useState(false);
+  const [withdrawLoading, setWithdrawLoading] = useState(false);
+  const [claimLoading, setClaimLoading] = useState(false);
+  const [createLoading, setCreateLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [depositAmount, setDepositAmount] = useState('');
@@ -119,7 +124,7 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
     }
 
     try {
-      setLoading(true);
+      setCreateLoading(true);
       setError(null);
       setSuccess(null);
 
@@ -138,7 +143,7 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
       console.error('Failed to create battle:', error);
       setError(error.message || 'Failed to create battle');
     } finally {
-      setLoading(false);
+      setCreateLoading(false);
     }
   };
 
@@ -155,13 +160,13 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
     }
 
     try {
-      setLoading(true);
+      setJoinLoading(true);
       setError(null);
       setSuccess(null);
 
       // First approve tokens
       const approveTx = await contractService.approveToken(
-        '0x4792A15f7d4D63582EF483EfB9A3963CE2855346',
+        '0xC2852Dac15Ec1FdA7697c06FcE436DaEA98ac799',
         depositAmount
       );
       await contractService.waitForTransaction(approveTx.hash);
@@ -182,7 +187,7 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
       console.error('Failed to join battle:', error);
       setError(error.message || 'Failed to join battle');
     } finally {
-      setLoading(false);
+      setJoinLoading(false);
     }
   };
 
@@ -199,13 +204,13 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
     }
 
     try {
-      setLoading(true);
+      setDepositLoading(true);
       setError(null);
       setSuccess(null);
 
       // First approve tokens
       const approveTx = await contractService.approveToken(
-        '0x4792A15f7d4D63582EF483EfB9A3963CE2855346',
+        '0xC2852Dac15Ec1FdA7697c06FcE436DaEA98ac799',
         depositAmount
       );
       await contractService.waitForTransaction(approveTx.hash);
@@ -223,7 +228,7 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
       console.error('Failed to deposit:', error);
       setError(error.message || 'Failed to deposit');
     } finally {
-      setLoading(false);
+      setDepositLoading(false);
     }
   };
 
@@ -234,7 +239,7 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
     }
 
     try {
-      setLoading(true);
+      setWithdrawLoading(true);
       setError(null);
       setSuccess(null);
 
@@ -249,13 +254,13 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
       console.error('Failed to withdraw:', error);
       setError(error.message || 'Failed to withdraw');
     } finally {
-      setLoading(false);
+      setWithdrawLoading(false);
     }
   };
 
   const handleClaimYield = async () => {
     try {
-      setLoading(true);
+      setClaimLoading(true);
       setError(null);
       setSuccess(null);
 
@@ -270,7 +275,7 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
       console.error('Failed to claim yield:', error);
       setError(error.message || 'Failed to claim yield');
     } finally {
-      setLoading(false);
+      setClaimLoading(false);
     }
   };
 
@@ -348,17 +353,17 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
           <div className="mt-6 flex space-x-4">
             <button
               onClick={handleWithdraw}
-              disabled={loading || !userPosition.depositedAmount || userPosition.depositedAmount === '0.0'}
+              disabled={withdrawLoading || !userPosition.depositedAmount || userPosition.depositedAmount === '0.0'}
               className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Withdrawing...' : 'Withdraw'}
+              {withdrawLoading ? 'Withdrawing...' : 'Withdraw'}
             </button>
             <button
               onClick={handleClaimYield}
-              disabled={loading || !userPosition.yieldEarned || userPosition.yieldEarned === '0.0'}
+              disabled={claimLoading || !userPosition.yieldEarned || userPosition.yieldEarned === '0.0'}
               className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Claiming...' : 'Claim Yield'}
+              {claimLoading ? 'Claiming...' : 'Claim Yield'}
             </button>
           </div>
         </div>
@@ -414,10 +419,10 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
         </div>
         <button
           onClick={handleCreateBattle}
-          disabled={loading || !battleName || !entryFee}
+          disabled={createLoading || !battleName || !entryFee}
           className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {loading ? 'Creating...' : 'Create Battle'}
+          {createLoading ? 'Creating...' : 'Create Battle'}
         </button>
       </div>
 
@@ -440,10 +445,10 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
           />
           <button
             onClick={handleDeposit}
-            disabled={loading || !depositAmount}
+            disabled={depositLoading || !depositAmount}
             className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'Depositing...' : 'Deposit'}
+            {depositLoading ? 'Depositing...' : 'Deposit'}
           </button>
         </div>
       </div>
@@ -555,10 +560,10 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
               </button>
               <button
                 onClick={handleJoinBattle}
-                disabled={loading || !depositAmount}
+                disabled={joinLoading || !depositAmount}
                 className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? 'Joining...' : 'Join Battle'}
+                {joinLoading ? 'Joining...' : 'Join Battle'}
               </button>
             </div>
           </div>

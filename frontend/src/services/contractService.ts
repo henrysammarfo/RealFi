@@ -276,6 +276,33 @@ class ContractServiceClass implements ContractService {
     }));
   }
 
+  async getTotalStats(): Promise<{ totalUsers: number; totalBattles: number }> {
+    const contract = this.getContract('Leaderboard');
+    if (!contract) throw new Error('Leaderboard contract not available');
+    
+    const [totalUsers, lastUpdateTime, topUserAddress, topUserScore] = await contract.getLeaderboardStats();
+    return {
+      totalUsers: Number(totalUsers),
+      totalBattles: 0 // This would need to be tracked separately
+    };
+  }
+
+  async getTopUser(): Promise<string> {
+    const contract = this.getContract('Leaderboard');
+    if (!contract) throw new Error('Leaderboard contract not available');
+    
+    const [totalUsers, lastUpdateTime, topUserAddress, topUserScore] = await contract.getLeaderboardStats();
+    return topUserAddress;
+  }
+
+  async getTopScore(): Promise<number> {
+    const contract = this.getContract('Leaderboard');
+    if (!contract) throw new Error('Leaderboard contract not available');
+    
+    const [totalUsers, lastUpdateTime, topUserAddress, topUserScore] = await contract.getLeaderboardStats();
+    return Number(topUserScore);
+  }
+
   async getUserRank(address: string): Promise<number> {
     const contract = this.getContract('Leaderboard');
     if (!contract) throw new Error('Leaderboard contract not available');
