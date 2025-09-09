@@ -103,7 +103,7 @@ RealFi/
 ### Contract Addresses (Live on Somnia Testnet)
 
 ```
-RealFiToken: 0x2758270ED3b61a49dee09485FE659a753c772086
+RealFiToken: 0x7941e8df64Ce12751e8823A058ebE9872371eFAc
 UserProfile: 0x42E3F51Ab897410B03655c00049fA2F0fCE9f056
 YieldVault: 0x222160A709F194ED7a34CeF0207271e4075B245D
 Leaderboard: 0x9de742296f6F680A3F953a7bfc5a6F6f9a52aC9d
@@ -125,7 +125,7 @@ AIStrategy: 0x917b514C0B0cf8e174c9B5379e0cbc5527B25bb6
 **Total**: 6/6 contracts deployed successfully
 
 **Explorer Links**:
-- [RealFiToken](https://shannon-explorer.somnia.network/address/0x2758270ED3b61a49dee09485FE659a753c772086)
+- [RealFiToken](https://shannon-explorer.somnia.network/address/0x7941e8df64Ce12751e8823A058ebE9872371eFAc)
 - [UserProfile](https://shannon-explorer.somnia.network/address/0x42E3F51Ab897410B03655c00049fA2F0fCE9f056)
 - [YieldVault](https://shannon-explorer.somnia.network/address/0x222160A709F194ED7a34CeF0207271e4075B245D)
 - [Leaderboard](https://shannon-explorer.somnia.network/address/0x9de742296f6F680A3F953a7bfc5a6F6f9a52aC9d)
