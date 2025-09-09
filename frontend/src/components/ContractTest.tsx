@@ -80,13 +80,24 @@ const ContractTest: React.FC = () => {
       <h3 className="text-lg font-semibold mb-4">Contract Connection Test</h3>
       <p className="text-sm text-gray-600 mb-4">Account: {account}</p>
       
-      <button
-        onClick={runContractTests}
-        disabled={loading}
-        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 mb-4"
-      >
-        {loading ? 'Testing...' : 'Run Contract Tests'}
-      </button>
+      <div className="flex gap-2 mb-4">
+        <button
+          onClick={runContractTests}
+          disabled={loading}
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+        >
+          {loading ? 'Testing...' : 'Run Contract Tests'}
+        </button>
+        <button
+          onClick={() => {
+            // Force refresh the page to clear any cached modules
+            window.location.reload();
+          }}
+          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+        >
+          Force Refresh Page
+        </button>
+      </div>
 
       {testResults && (
         <div className="bg-white p-4 rounded-lg">
