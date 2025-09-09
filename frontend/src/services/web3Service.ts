@@ -72,6 +72,9 @@ export class Web3Service {
       // This error code indicates that the chain has not been added to MetaMask
       if (switchError.code === 4902) {
         try {
+          if (!window.ethereum) {
+            throw new Error('MetaMask not installed');
+          }
           await window.ethereum.request({
             method: 'wallet_addEthereumChain',
             params: [NETWORK_CONFIG],
@@ -170,7 +173,11 @@ export class Web3Service {
       throw new Error('Provider not connected');
     }
 
-    return await this.provider.waitForTransaction(txHash);
+    const receipt = await this.provider.waitForTransaction(txHash);
+    if (!receipt) {
+      throw new Error('Transaction receipt not found');
+    }
+    return receipt;
   }
 
   public formatAddress(address: string): string {

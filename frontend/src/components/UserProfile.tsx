@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useWeb3 } from '../hooks/useWeb3';
-import { CONTRACT_ADDRESSES } from '../config/contracts';
+import { contractService } from '../services/contractService';
 
 interface UserData {
   username: string;
@@ -18,17 +18,19 @@ interface UserProfileProps {
 }
 
 const UserProfile: React.FC<UserProfileProps> = ({ className = '' }) => {
-  const { account, isConnected, getContract, formatAmount } = useWeb3();
+  const { account, isConnected } = useWeb3();
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isRegistered, setIsRegistered] = useState(false);
   const [username, setUsername] = useState('');
   const [showRegistration, setShowRegistration] = useState(false);
+  const [tokenBalance, setTokenBalance] = useState('0');
 
   useEffect(() => {
     if (isConnected && account) {
       checkUserRegistration();
+      loadTokenBalance();
     }
   }, [isConnected, account]);
 
@@ -37,29 +39,37 @@ const UserProfile: React.FC<UserProfileProps> = ({ className = '' }) => {
 
     try {
       setLoading(true);
-      const userProfileContract = await getContract('UserProfile');
       
-      try {
-        const userData = await userProfileContract.getUserData(account);
-        setUserData({
-          username: userData[0],
-          registrationTime: Number(userData[1]),
-          totalDeposits: userData[2].toString(),
-          totalWithdrawals: userData[3].toString(),
-          battlesJoined: Number(userData[4]),
-          battlesWon: Number(userData[5]),
-          reputationScore: Number(userData[6]),
-          isActive: userData[7],
-        });
-        setIsRegistered(true);
-      } catch (err) {
-        // User not registered
-        setIsRegistered(false);
+      // Get user profile data
+      const userData = await contractService.getUserData(account);
+      setUserData(userData);
+      setIsRegistered(true);
+      
+      // Get vault position to show actual deposits
+      const vaultPosition = await contractService.getUserPosition(account);
+      if (vaultPosition && vaultPosition.depositedAmount !== '0.0') {
+        setUserData(prev => prev ? {
+          ...prev,
+          totalDeposits: vaultPosition.depositedAmount
+        } : null);
       }
-    } catch (err: any) {
-      setError(err.message || 'Failed to check user registration');
+    } catch (error: any) {
+      // User not registered
+      setIsRegistered(false);
+      console.log('User not registered yet');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadTokenBalance = async () => {
+    if (!account) return;
+
+    try {
+      const balance = await contractService.getTokenBalance(account);
+      setTokenBalance(balance);
+    } catch (error: any) {
+      console.error('Failed to load token balance:', error);
     }
   };
 
@@ -73,15 +83,15 @@ const UserProfile: React.FC<UserProfileProps> = ({ className = '' }) => {
       setLoading(true);
       setError(null);
       
-      const userProfileContract = await getContract('UserProfile');
-      const tx = await userProfileContract.registerUser(username.trim());
-      await tx.wait();
+      const tx = await contractService.registerUser(username.trim());
+      await contractService.waitForTransaction(tx.hash);
       
       setShowRegistration(false);
       setUsername('');
       await checkUserRegistration();
-    } catch (err: any) {
-      setError(err.message || 'Failed to register user');
+    } catch (error: any) {
+      console.error('Failed to register user:', error);
+      setError(error.message || 'Failed to register user');
     } finally {
       setLoading(false);
     }
@@ -97,202 +107,157 @@ const UserProfile: React.FC<UserProfileProps> = ({ className = '' }) => {
       setLoading(true);
       setError(null);
       
-      const userProfileContract = await getContract('UserProfile');
-      const tx = await userProfileContract.updateProfile(username.trim());
-      await tx.wait();
+      const tx = await contractService.updateProfile(username.trim());
+      await contractService.waitForTransaction(tx.hash);
       
       setShowRegistration(false);
       setUsername('');
       await checkUserRegistration();
-    } catch (err: any) {
-      setError(err.message || 'Failed to update profile');
+    } catch (error: any) {
+      console.error('Failed to update profile:', error);
+      setError(error.message || 'Failed to update profile');
     } finally {
       setLoading(false);
     }
   };
 
-  if (!isConnected) {
-    return (
-      <div className={`text-center py-8 ${className}`}>
-        <p className="text-gray-500">Please connect your wallet to view profile</p>
-      </div>
-    );
-  }
-
-  if (loading && !userData) {
-    return (
-      <div className={`flex justify-center items-center py-8 ${className}`}>
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
-      </div>
-    );
-  }
-
-  if (!isRegistered) {
-    return (
-      <div className={`bg-white rounded-lg shadow-md p-6 ${className}`}>
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Register Your Profile</h2>
-        
-        {!showRegistration ? (
-          <div className="text-center">
-            <p className="text-gray-600 mb-4">
-              Welcome to RealFi! Create your profile to start participating in yield battles.
-            </p>
-            <button
-              onClick={() => setShowRegistration(true)}
-              className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
-            >
-              Create Profile
-            </button>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-                Username
-              </label>
-              <input
-                type="text"
-                id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter your username"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                maxLength={20}
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                3-20 characters, alphanumeric only
-              </p>
-            </div>
-            
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-                {error}
-              </div>
-            )}
-            
-            <div className="flex space-x-3">
-              <button
-                onClick={handleRegister}
-                disabled={loading}
-                className="flex-1 bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
-              >
-                {loading ? 'Registering...' : 'Register'}
-              </button>
-              <button
-                onClick={() => {
-                  setShowRegistration(false);
-                  setUsername('');
-                  setError(null);
-                }}
-                className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  }
+  const formatTime = (timestamp: number) => {
+    return new Date(timestamp * 1000).toLocaleDateString();
+  };
 
   return (
-    <div className={`bg-white rounded-lg shadow-md p-6 ${className}`}>
-      <div className="flex justify-between items-start mb-6">
-        <div>
-          <h2 className="text-xl font-bold text-gray-900">User Profile</h2>
-          <p className="text-gray-600">@{userData?.username}</p>
-        </div>
-        <button
-          onClick={() => setShowRegistration(true)}
-          className="text-primary-600 hover:text-primary-700 text-sm font-medium"
-        >
-          Edit Profile
-        </button>
+    <div className={`space-y-6 ${className}`}>
+      {/* Header */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">User Profile</h2>
+        <p className="text-gray-600">Manage your profile and view your statistics</p>
       </div>
 
-      {showRegistration && (
-        <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">Update Username</h3>
-          <div className="space-y-3">
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter new username"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              maxLength={20}
-            />
-            
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-                {error}
-              </div>
-            )}
-            
-            <div className="flex space-x-3">
-              <button
-                onClick={handleUpdateProfile}
-                disabled={loading}
-                className="flex-1 bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
-              >
-                {loading ? 'Updating...' : 'Update'}
-              </button>
-              <button
-                onClick={() => {
-                  setShowRegistration(false);
-                  setUsername('');
-                  setError(null);
-                }}
-                className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
-              >
-                Cancel
-              </button>
+      {/* Error Message */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm text-red-800">{error}</p>
             </div>
           </div>
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-4">
-          <div className="bg-blue-50 p-4 rounded-lg">
-            <h3 className="text-sm font-medium text-blue-900 mb-2">Reputation Score</h3>
-            <p className="text-2xl font-bold text-blue-600">{userData?.reputationScore}</p>
+      {/* User Data */}
+      {userData && isRegistered ? (
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex justify-between items-start mb-6">
+            <div>
+              <h3 className="text-xl font-semibold text-gray-900">@{userData.username}</h3>
+              <p className="text-gray-600">Member since {formatTime(userData.registrationTime)}</p>
+            </div>
+            <button
+              onClick={() => setShowRegistration(true)}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+            >
+              Edit Profile
+            </button>
           </div>
-          
-          <div className="bg-green-50 p-4 rounded-lg">
-            <h3 className="text-sm font-medium text-green-900 mb-2">Total Deposits</h3>
-            <p className="text-lg font-semibold text-green-600">
-              {formatAmount(userData?.totalDeposits || '0')} RFT
-            </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-blue-50 rounded-lg p-4">
+              <div className="text-2xl font-bold text-blue-600">{userData.reputationScore}</div>
+              <div className="text-sm text-blue-800">Reputation Score</div>
+            </div>
+            <div className="bg-green-50 rounded-lg p-4">
+              <div className="text-2xl font-bold text-green-600">{userData.totalDeposits} RFT</div>
+              <div className="text-sm text-green-800">Total Deposits</div>
+            </div>
+            <div className="bg-purple-50 rounded-lg p-4">
+              <div className="text-2xl font-bold text-purple-600">{userData.battlesJoined}</div>
+              <div className="text-sm text-purple-800">Battles Joined</div>
+            </div>
+            <div className="bg-orange-50 rounded-lg p-4">
+              <div className="text-2xl font-bold text-orange-600">{userData.battlesWon}</div>
+              <div className="text-sm text-orange-800">Battles Won</div>
+            </div>
           </div>
-          
-          <div className="bg-yellow-50 p-4 rounded-lg">
-            <h3 className="text-sm font-medium text-yellow-900 mb-2">Total Withdrawals</h3>
-            <p className="text-lg font-semibold text-yellow-600">
-              {formatAmount(userData?.totalWithdrawals || '0')} RFT
-            </p>
+
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-gray-50 rounded-lg p-4">
+              <h4 className="font-semibold text-gray-900 mb-2">Account Details</h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Status:</span>
+                  <span className={`font-medium ${userData.isActive ? 'text-green-600' : 'text-red-600'}`}>
+                    {userData.isActive ? 'Active' : 'Inactive'}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Total Withdrawals:</span>
+                  <span className="font-medium">{userData.totalWithdrawals} RFT</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gray-50 rounded-lg p-4">
+              <h4 className="font-semibold text-gray-900 mb-2">Token Balance</h4>
+              <div className="text-2xl font-bold text-gray-900">{tokenBalance} RFT</div>
+              <p className="text-sm text-gray-600 mt-1">RealFi Token Balance</p>
+            </div>
           </div>
         </div>
-        
-        <div className="space-y-4">
-          <div className="bg-purple-50 p-4 rounded-lg">
-            <h3 className="text-sm font-medium text-purple-900 mb-2">Battles Joined</h3>
-            <p className="text-2xl font-bold text-purple-600">{userData?.battlesJoined}</p>
-          </div>
-          
-          <div className="bg-red-50 p-4 rounded-lg">
-            <h3 className="text-sm font-medium text-red-900 mb-2">Battles Won</h3>
-            <p className="text-2xl font-bold text-red-600">{userData?.battlesWon}</p>
-          </div>
-          
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <h3 className="text-sm font-medium text-gray-900 mb-2">Member Since</h3>
-            <p className="text-sm text-gray-600">
-              {userData?.registrationTime ? new Date(Number(userData.registrationTime) * 1000).toLocaleDateString() : 'N/A'}
-            </p>
+      ) : (
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="text-center">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Welcome to RealFi!</h3>
+            <p className="text-gray-600 mb-6">Register your profile to start participating in yield battles and earning rewards.</p>
+            <button
+              onClick={() => setShowRegistration(true)}
+              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
+            >
+              Register Profile
+            </button>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* Registration Modal */}
+      {showRegistration && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              {isRegistered ? 'Update Profile' : 'Register Profile'}
+            </h3>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Enter your username"
+              />
+            </div>
+            <div className="flex space-x-4">
+              <button
+                onClick={() => setShowRegistration(false)}
+                className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={isRegistered ? handleUpdateProfile : handleRegister}
+                disabled={loading || !username.trim()}
+                className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? 'Processing...' : (isRegistered ? 'Update' : 'Register')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

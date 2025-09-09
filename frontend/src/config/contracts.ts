@@ -1,19 +1,6 @@
 // RealFi DeFi Platform Contract Configuration
-// Update these addresses after deploying to Somnia Testnet
+// All addresses are live on Somnia Testnet (Chain ID: 50312)
 
-export const SOMNIA_NETWORK = {
-  chainId: 50312, // Somnia Testnet chain ID
-  chainName: 'Somnia Testnet',
-  rpcUrls: ['https://dream-rpc.somnia.network'],
-  blockExplorerUrls: ['https://shannon-explorer.somnia.network'],
-  nativeCurrency: {
-    name: 'Somnia',
-    symbol: 'SOM',
-    decimals: 18,
-  },
-};
-
-// Contract addresses - will be populated after deployment
 export const CONTRACT_ADDRESSES = {
   RealFiToken: process.env.REACT_APP_REALFI_TOKEN_ADDRESS || '0x8c73284b55cb55EB46Dd42617bA6213037e602e9',
   UserProfile: process.env.REACT_APP_USER_PROFILE_ADDRESS || '0x41d87298B54d329872c29ec385367cD4C404e8e6',
@@ -23,7 +10,58 @@ export const CONTRACT_ADDRESSES = {
   AIStrategy: process.env.REACT_APP_AI_STRATEGY_ADDRESS || '0x809303cC124eABCDa2c6aFF9eefEd30EB662362a',
 };
 
-// Contract ABIs - these will be generated from the compiled contracts
+// Network configuration for MetaMask
+export const NETWORK_CONFIG = {
+  chainId: `0x${(50312).toString(16)}`,
+  chainName: 'Somnia Testnet',
+  rpcUrls: ['https://dream-rpc.somnia.network'],
+  blockExplorerUrls: ['https://shannon-explorer.somnia.network'],
+  nativeCurrency: {
+    name: 'Somnia',
+    symbol: 'STT',
+    decimals: 18,
+  },
+};
+
+// Chain IDs for cross-chain bridge
+export const CHAIN_IDS = {
+  ETHEREUM: 0,
+  POLYGON: 1,
+  BSC: 2,
+  SOMNIA: 3,
+} as const;
+
+export type ChainId = typeof CHAIN_IDS[keyof typeof CHAIN_IDS];
+
+// Chain configurations for bridge
+export const CHAIN_CONFIGS = {
+  [CHAIN_IDS.ETHEREUM]: {
+    name: 'Ethereum',
+    symbol: 'ETH',
+    explorer: 'https://etherscan.io',
+    rpc: 'https://eth-mainnet.alchemyapi.io/v2/demo',
+  },
+  [CHAIN_IDS.POLYGON]: {
+    name: 'Polygon',
+    symbol: 'MATIC',
+    explorer: 'https://polygonscan.com',
+    rpc: 'https://polygon-rpc.com',
+  },
+  [CHAIN_IDS.BSC]: {
+    name: 'BSC',
+    symbol: 'BNB',
+    explorer: 'https://bscscan.com',
+    rpc: 'https://bsc-dataseed.binance.org',
+  },
+  [CHAIN_IDS.SOMNIA]: {
+    name: 'Somnia',
+    symbol: 'STT',
+    explorer: 'https://shannon-explorer.somnia.network',
+    rpc: 'https://dream-rpc.somnia.network',
+  },
+};
+
+// Complete Contract ABIs - Generated from deployed contracts
 export const CONTRACT_ABIS = {
   RealFiToken: [
     "function name() view returns (string)",
@@ -106,21 +144,17 @@ export const CONTRACT_ABIS = {
   ]
 };
 
-// Chain IDs for cross-chain bridge
-export const CHAIN_IDS = {
-  ETHEREUM: 0,
-  POLYGON: 1,
-  BSC: 2,
-  SOMNIA: 3,
-} as const;
-
-export type ChainId = typeof CHAIN_IDS[keyof typeof CHAIN_IDS];
-
-// Network configuration for MetaMask
-export const NETWORK_CONFIG = {
-  chainId: `0x${SOMNIA_NETWORK.chainId.toString(16)}`,
-  chainName: SOMNIA_NETWORK.chainName,
-  rpcUrls: SOMNIA_NETWORK.rpcUrls,
-  blockExplorerUrls: SOMNIA_NETWORK.blockExplorerUrls,
-  nativeCurrency: SOMNIA_NETWORK.nativeCurrency,
+// Contract verification
+export const verifyContractAddresses = () => {
+  const requiredAddresses = Object.keys(CONTRACT_ADDRESSES);
+  const missingAddresses = requiredAddresses.filter(
+    key => !CONTRACT_ADDRESSES[key as keyof typeof CONTRACT_ADDRESSES]
+  );
+  
+  if (missingAddresses.length > 0) {
+    console.warn('Missing contract addresses:', missingAddresses);
+    return false;
+  }
+  
+  return true;
 };
