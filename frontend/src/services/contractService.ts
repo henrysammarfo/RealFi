@@ -58,9 +58,13 @@ class ContractServiceClass implements ContractService {
 
   // RealFiToken methods
   async getTokenBalance(address: string): Promise<string> {
-    const contract = this.getContract('RealFiToken');
-    if (!contract) throw new Error('RealFiToken contract not available');
+    // Use the new RealFiToken address directly to bypass caching issues
+    const newTokenAddress = '0x7941e8df64Ce12751e8823A058ebE9872371eFAc';
+    const tokenABI = CONTRACT_ABIS.RealFiToken;
     
+    if (!this.provider) throw new Error('Provider not available');
+    
+    const contract = new ethers.Contract(newTokenAddress, tokenABI, this.provider);
     const balance = await contract.balanceOf(address);
     return ethers.formatEther(balance);
   }
@@ -85,17 +89,25 @@ class ContractServiceClass implements ContractService {
   }
 
   async approveToken(spender: string, amount: string): Promise<ethers.TransactionResponse> {
-    const contract = this.getContract('RealFiToken');
-    if (!contract) throw new Error('RealFiToken contract not available');
+    // Use the new RealFiToken address directly to bypass caching issues
+    const newTokenAddress = '0x7941e8df64Ce12751e8823A058ebE9872371eFAc';
+    const tokenABI = CONTRACT_ABIS.RealFiToken;
     
+    if (!this.signer) throw new Error('Signer not available');
+    
+    const contract = new ethers.Contract(newTokenAddress, tokenABI, this.signer);
     const amountWei = ethers.parseEther(amount);
     return await contract.approve(spender, amountWei);
   }
 
   async publicMint(amount: string): Promise<ethers.TransactionResponse> {
-    const contract = this.getContract('RealFiToken');
-    if (!contract) throw new Error('RealFiToken contract not available');
+    // Use the new RealFiToken address directly to bypass caching issues
+    const newTokenAddress = '0x7941e8df64Ce12751e8823A058ebE9872371eFAc';
+    const tokenABI = CONTRACT_ABIS.RealFiToken;
     
+    if (!this.signer) throw new Error('Signer not available');
+    
+    const contract = new ethers.Contract(newTokenAddress, tokenABI, this.signer);
     const amountWei = ethers.parseEther(amount);
     return await contract.publicMint(amountWei);
   }
