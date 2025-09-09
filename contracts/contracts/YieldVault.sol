@@ -8,6 +8,16 @@ import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
+interface IUserProfile {
+    function updateUserStats(
+        address _user,
+        uint256 _depositAmount,
+        uint256 _withdrawalAmount,
+        bool _battleJoined,
+        bool _battleWon
+    ) external;
+}
+
 /**
  * @title YieldVault
  * @dev Manages yield farming vaults and battle participation for RealFi DeFi platform
@@ -393,8 +403,19 @@ contract YieldVault is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reent
         bool _battleWon
     ) internal {
         // Call UserProfile contract to update stats
-        // This would require the UserProfile contract to have a public updateUserStats function
-        // For now, we'll just emit events
+        if (userProfileContract != address(0)) {
+            try IUserProfile(userProfileContract).updateUserStats(
+                _user,
+                _depositAmount,
+                _withdrawalAmount,
+                _battleJoined,
+                _battleWon
+            ) {
+                // Successfully updated user stats
+            } catch {
+                // Continue even if user profile update fails
+            }
+        }
     }
     
     /**

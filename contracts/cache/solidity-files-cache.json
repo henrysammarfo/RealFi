@@ -506,8 +506,8 @@
       ]
     },
     "C:\\Users\\ez\\Desktop\\RealFi\\contracts\\contracts\\YieldVault.sol": {
-      "lastModificationDate": 1757443991803,
-      "contentHash": "82c5239cecfa84f46a5fac0b6ccfefa1",
+      "lastModificationDate": 1757461670420,
+      "contentHash": "647fd9604a0223fc62596b003d936f56",
       "sourceName": "contracts/YieldVault.sol",
       "solcConfig": {
         "version": "0.8.22",
@@ -546,6 +546,7 @@
         "^0.8.22"
       ],
       "artifacts": [
+        "IUserProfile",
         "YieldVault"
       ]
     },
@@ -1058,8 +1059,8 @@
       ]
     },
     "C:\\Users\\ez\\Desktop\\RealFi\\contracts\\contracts\\UserProfile.sol": {
-      "lastModificationDate": 1757444826493,
-      "contentHash": "8808d7775d9c8af8c4c5a35b73c61a20",
+      "lastModificationDate": 1757461833418,
+      "contentHash": "3f4254578326c44d5bdfe77b0ff0c322",
       "sourceName": "contracts/UserProfile.sol",
       "solcConfig": {
         "version": "0.8.22",

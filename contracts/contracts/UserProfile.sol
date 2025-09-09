@@ -34,6 +34,7 @@ contract UserProfile is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reen
     event UserUpdated(address indexed user, string username, uint256 timestamp);
     event ReputationUpdated(address indexed user, uint256 oldScore, uint256 newScore);
     event UserDeactivated(address indexed user, uint256 timestamp);
+    event UserStatsUpdated(address indexed user, uint256 depositAmount, uint256 withdrawalAmount, bool battleJoined, bool battleWon, uint256 timestamp);
     
     // State variables
     mapping(address => UserData) public users;
@@ -45,6 +46,7 @@ contract UserProfile is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reen
     
     // Contract references
     address public leaderboardContract;
+    address public yieldVaultContract;
     
     // Constants
     uint256 public constant MIN_USERNAME_LENGTH = 3;
@@ -73,6 +75,11 @@ contract UserProfile is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reen
     function setLeaderboardContract(address _leaderboardContract) external onlyOwner {
         require(_leaderboardContract != address(0), "Invalid leaderboard contract address");
         leaderboardContract = _leaderboardContract;
+    }
+    
+    function setYieldVaultContract(address _yieldVaultContract) external onlyOwner {
+        require(_yieldVaultContract != address(0), "Invalid yield vault contract address");
+        yieldVaultContract = _yieldVaultContract;
     }
     
     /**
@@ -166,38 +173,6 @@ contract UserProfile is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reen
         users[msg.sender].metadata[_key] = _value;
     }
     
-    /**
-     * @dev Update user statistics (only callable by authorized contracts)
-     * @param _user The user address
-     * @param _depositAmount Amount deposited
-     * @param _withdrawalAmount Amount withdrawn
-     * @param _battleJoined Whether user joined a battle
-     * @param _battleWon Whether user won a battle
-     */
-    function updateUserStats(
-        address _user,
-        uint256 _depositAmount,
-        uint256 _withdrawalAmount,
-        bool _battleJoined,
-        bool _battleWon
-    ) external onlyOwner {
-        require(isRegistered[_user], "User not registered");
-        
-        UserData storage user = users[_user];
-        user.totalDeposits += _depositAmount;
-        user.totalWithdrawals += _withdrawalAmount;
-        
-        if (_battleJoined) {
-            user.battlesJoined++;
-        }
-        
-        if (_battleWon) {
-            user.battlesWon++;
-        }
-        
-        // Update reputation score based on activity
-        _updateReputationScore(_user);
-    }
     
     /**
      * @dev Update reputation score based on user activity
@@ -312,6 +287,51 @@ contract UserProfile is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reen
      */
     function getTotalStats() external view returns (uint256 _totalUsers, uint256 _activeUsers) {
         return (totalUsers, activeUsers);
+    }
+    
+    /**
+     * @dev Update user statistics (called by other contracts)
+     * @param _user The user address
+     * @param _depositAmount Amount deposited
+     * @param _withdrawalAmount Amount withdrawn
+     * @param _battleJoined Whether user joined a battle
+     * @param _battleWon Whether user won a battle
+     */
+    function updateUserStats(
+        address _user,
+        uint256 _depositAmount,
+        uint256 _withdrawalAmount,
+        bool _battleJoined,
+        bool _battleWon
+    ) external {
+        // Only allow YieldVault contract to call this function
+        require(msg.sender == yieldVaultContract, "Only YieldVault can update stats");
+        require(isRegistered[_user], "User not registered");
+        
+        UserData storage userData = users[_user];
+        
+        // Update deposit and withdrawal totals
+        if (_depositAmount > 0) {
+            userData.totalDeposits += _depositAmount;
+        }
+        if (_withdrawalAmount > 0) {
+            userData.totalWithdrawals += _withdrawalAmount;
+        }
+        
+        // Update battle statistics
+        if (_battleJoined) {
+            userData.battlesJoined++;
+        }
+        if (_battleWon) {
+            userData.battlesWon++;
+        }
+        
+        // Update reputation score based on activity
+        if (_depositAmount > 0 || _battleJoined) {
+            userData.reputationScore += 10; // Increase reputation for activity
+        }
+        
+        emit UserStatsUpdated(_user, _depositAmount, _withdrawalAmount, _battleJoined, _battleWon, block.timestamp);
     }
     
     /**
