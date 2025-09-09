@@ -75,12 +75,12 @@ const AIStrategies: React.FC<AIStrategiesProps> = ({ className = '' }) => {
             name: strategyData.name || `Strategy ${i}`,
             description: strategyData.description || `AI-powered strategy ${i}`,
             riskLevel: strategyData.riskLevel || 1,
-            expectedReturn: strategyData.expectedReturn || 0,
+            expectedReturn: strategyData.expectedReturn ? Number(strategyData.expectedReturn) / 100 : 0, // Convert basis points to percentage
             minDeposit: strategyData.minDeposit || 0,
             maxDeposit: strategyData.maxDeposit || 0,
             duration: strategyData.duration || 0,
-            successRate: strategyData.successRate || 0,
-            isActive: strategyData.isActive === true || strategyData.isActive === 1 || strategyData.isActive === BigInt(1),
+            successRate: strategyData.successRate ? Number(strategyData.successRate) : 0,
+            isActive: Boolean(strategyData.isActive) && strategyData.isActive !== 0 && strategyData.isActive !== BigInt(0),
             totalAdopted: strategyData.totalAdopted || 0,
             totalReturn: strategyData.totalReturn || 0
           });
