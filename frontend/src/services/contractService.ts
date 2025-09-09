@@ -143,7 +143,7 @@ class ContractServiceClass implements ContractService {
         // Register user in leaderboard
         await leaderboardContract.registerUser(userAddress, username);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log('Leaderboard registration failed (this is expected for existing users):', error.message);
     }
     
