@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ethers } from 'ethers';
 import { useWeb3 } from '../hooks/useWeb3';
 import { contractService } from '../services/contractService';
 
@@ -62,83 +63,34 @@ const AIStrategies: React.FC<AIStrategiesProps> = ({ className = '' }) => {
       setLoading(true);
       setError(null);
 
-      // Load available strategies from live contract
+      // Load available strategies from live contract only
       const strategiesList: AIStrategy[] = [];
       const aiStrategyContract = contractService.getContract('AIStrategy');
       
       if (aiStrategyContract) {
-        // Try to load strategies 1-10 (common range)
+        // Try to load strategies 1-10 from live contract
         for (let i = 1; i <= 10; i++) {
           try {
             const strategyData = await aiStrategyContract.getStrategyDetails(i);
             strategiesList.push({
               strategyId: i,
               name: strategyData[0] || `Strategy ${i}`,
-              description: strategyData[1] || `AI-powered strategy ${i} for optimal yield generation`,
-              riskLevel: Number(strategyData[2]) || Math.floor(Math.random() * 5) + 1,
-              expectedReturn: Number(strategyData[3]) || Math.floor(Math.random() * 50) + 10,
-              minDeposit: Number(strategyData[4]) || 100,
-              maxDeposit: Number(strategyData[5]) || 10000,
-              duration: Number(strategyData[6]) || 30,
-              successRate: Number(strategyData[7]) || Math.floor(Math.random() * 30) + 70,
-              isActive: strategyData[8] !== undefined ? strategyData[8] : true,
+              description: strategyData[1] || `AI-powered strategy ${i}`,
+              riskLevel: Number(strategyData[2]) || 1,
+              expectedReturn: Number(strategyData[3]) || 0,
+              minDeposit: Number(strategyData[4]) || 0,
+              maxDeposit: Number(strategyData[5]) || 0,
+              duration: Number(strategyData[6]) || 0,
+              successRate: Number(strategyData[7]) || 0,
+              isActive: strategyData[8] !== undefined ? strategyData[8] : false,
               totalAdopted: Number(strategyData[9]) || 0,
               totalReturn: Number(strategyData[10]) || 0
             });
           } catch (error) {
-            // Strategy not found, continue
-            console.log(`Strategy ${i} not found in contract`);
+            // Strategy not found in contract, skip
+            console.log(`Strategy ${i} not found in live contract`);
           }
         }
-      }
-
-      // If no strategies found in contract, create some basic ones for demo
-      if (strategiesList.length === 0) {
-        const basicStrategies = [
-          {
-            strategyId: 1,
-            name: "Conservative Yield",
-            description: "Low-risk strategy focusing on stable yield generation with minimal volatility",
-            riskLevel: 2,
-            expectedReturn: 15,
-            minDeposit: 100,
-            maxDeposit: 5000,
-            duration: 30,
-            successRate: 85,
-            isActive: true,
-            totalAdopted: 0,
-            totalReturn: 0
-          },
-          {
-            strategyId: 2,
-            name: "Balanced Growth",
-            description: "Medium-risk strategy balancing yield and growth potential",
-            riskLevel: 3,
-            expectedReturn: 25,
-            minDeposit: 200,
-            maxDeposit: 10000,
-            duration: 45,
-            successRate: 75,
-            isActive: true,
-            totalAdopted: 0,
-            totalReturn: 0
-          },
-          {
-            strategyId: 3,
-            name: "Aggressive Alpha",
-            description: "High-risk, high-reward strategy for maximum yield potential",
-            riskLevel: 5,
-            expectedReturn: 40,
-            minDeposit: 500,
-            maxDeposit: 20000,
-            duration: 60,
-            successRate: 60,
-            isActive: true,
-            totalAdopted: 0,
-            totalReturn: 0
-          }
-        ];
-        strategiesList.push(...basicStrategies);
       }
 
       setStrategies(strategiesList);
@@ -167,32 +119,16 @@ const AIStrategies: React.FC<AIStrategiesProps> = ({ className = '' }) => {
       if (aiStrategyContract) {
         const marketData = await aiStrategyContract.getCurrentMarketCondition();
         setMarketCondition({
-          volatility: Number(marketData[0]) || 25,
-          trend: Number(marketData[1]) || 15,
-          liquidity: Number(marketData[2]) || 80,
-          risk: Number(marketData[3]) || 30,
-          opportunity: Number(marketData[4]) || 65
-        });
-      } else {
-        // Fallback market condition
-        setMarketCondition({
-          volatility: 25,
-          trend: 15,
-          liquidity: 80,
-          risk: 30,
-          opportunity: 65
+          volatility: Number(marketData[0]) || 0,
+          trend: Number(marketData[1]) || 0,
+          liquidity: Number(marketData[2]) || 0,
+          risk: Number(marketData[3]) || 0,
+          opportunity: Number(marketData[4]) || 0
         });
       }
     } catch (error: any) {
       console.error('Failed to load market condition:', error);
-      // Set fallback market condition
-      setMarketCondition({
-        volatility: 25,
-        trend: 15,
-        liquidity: 80,
-        risk: 30,
-        opportunity: 65
-      });
+      setError('Failed to load live market data from contract');
     }
   };
 
@@ -206,9 +142,7 @@ const AIStrategies: React.FC<AIStrategiesProps> = ({ className = '' }) => {
       setConfidence(recData.confidence);
     } catch (error: any) {
       console.error('Failed to get recommendations:', error);
-      // Generate fallback recommendations
-      setRecommendations([1, 2, 3]);
-      setConfidence(75);
+      setError('Failed to get live AI recommendations from contract');
     } finally {
       setLoading(false);
     }
@@ -266,7 +200,7 @@ const AIStrategies: React.FC<AIStrategiesProps> = ({ className = '' }) => {
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Live AI Strategies</h2>
         <p className="text-gray-600">AI-powered investment strategies with live market analysis</p>
         <div className="mt-2 text-sm text-green-600 font-medium">
-          ✅ All data loaded from live Somnia Testnet contracts
+          All data loaded from live Somnia Testnet contracts
         </div>
       </div>
 
@@ -309,27 +243,27 @@ const AIStrategies: React.FC<AIStrategiesProps> = ({ className = '' }) => {
             <div className="bg-blue-50 rounded-lg p-4">
               <div className="text-2xl font-bold text-blue-600">{marketCondition.volatility}%</div>
               <div className="text-sm text-blue-800">Volatility</div>
-              <div className="text-xs text-blue-600 mt-1">Live data</div>
+              <div className="text-xs text-blue-600 mt-1">Live from contract</div>
             </div>
             <div className="bg-green-50 rounded-lg p-4">
               <div className="text-2xl font-bold text-green-600">{marketCondition.trend}%</div>
               <div className="text-sm text-green-800">Trend</div>
-              <div className="text-xs text-green-600 mt-1">Live data</div>
+              <div className="text-xs text-green-600 mt-1">Live from contract</div>
             </div>
             <div className="bg-purple-50 rounded-lg p-4">
               <div className="text-2xl font-bold text-purple-600">{marketCondition.liquidity}%</div>
               <div className="text-sm text-purple-800">Liquidity</div>
-              <div className="text-xs text-purple-600 mt-1">Live data</div>
+              <div className="text-xs text-purple-600 mt-1">Live from contract</div>
             </div>
             <div className="bg-orange-50 rounded-lg p-4">
               <div className="text-2xl font-bold text-orange-600">{marketCondition.risk}%</div>
               <div className="text-sm text-orange-800">Risk Level</div>
-              <div className="text-xs text-orange-600 mt-1">Live data</div>
+              <div className="text-xs text-orange-600 mt-1">Live from contract</div>
             </div>
             <div className="bg-indigo-50 rounded-lg p-4">
               <div className="text-2xl font-bold text-indigo-600">{marketCondition.opportunity}%</div>
               <div className="text-sm text-indigo-800">Opportunity</div>
-              <div className="text-xs text-indigo-600 mt-1">Live data</div>
+              <div className="text-xs text-indigo-600 mt-1">Live from contract</div>
             </div>
           </div>
         </div>
@@ -363,7 +297,7 @@ const AIStrategies: React.FC<AIStrategiesProps> = ({ className = '' }) => {
                 </span>
               ))}
             </div>
-            <div className="text-xs text-blue-600 mt-2">Based on live market analysis and your profile</div>
+            <div className="text-xs text-blue-600 mt-2">Based on live market analysis from contract</div>
           </div>
         )}
       </div>
@@ -374,11 +308,12 @@ const AIStrategies: React.FC<AIStrategiesProps> = ({ className = '' }) => {
         {loading ? (
           <div className="text-center py-8">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-2 text-gray-600">Loading live strategies...</p>
+            <p className="mt-2 text-gray-600">Loading live strategies from contract...</p>
           </div>
         ) : strategies.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-gray-500">No strategies available</p>
+            <p className="text-gray-500">No strategies available in live contract</p>
+            <p className="text-sm text-gray-400 mt-2">Strategies need to be added to the AIStrategy contract</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -413,7 +348,7 @@ const AIStrategies: React.FC<AIStrategiesProps> = ({ className = '' }) => {
                       </div>
                       <div>
                         <span className="text-gray-600">Min Deposit:</span>
-                        <span className="ml-2 font-medium">{strategy.minDeposit} RFT</span>
+                        <span className="ml-2 font-medium">{contractService.formatAmount(ethers.formatEther(strategy.minDeposit.toString()))} RFT</span>
                       </div>
                     </div>
                     <div className="text-xs text-green-600 mt-2">

@@ -199,6 +199,13 @@ class ContractServiceClass implements ContractService {
     return await contract.withdraw(amountWei);
   }
 
+  async withdrawAll(): Promise<ethers.TransactionResponse> {
+    const contract = this.getContract('YieldVault');
+    if (!contract) throw new Error('YieldVault contract not available');
+    
+    return await contract.withdrawAll();
+  }
+
   async createBattle(name: string, entryFee: string, maxParticipants: number, duration: number): Promise<ethers.TransactionResponse> {
     const contract = this.getContract('YieldVault');
     if (!contract) throw new Error('YieldVault contract not available');

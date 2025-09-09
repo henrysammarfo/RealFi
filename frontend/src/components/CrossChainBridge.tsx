@@ -85,6 +85,11 @@ const CrossChainBridge: React.FC<CrossChainBridgeProps> = ({ className = '' }) =
       setError(null);
       setSuccess(null);
 
+      // First approve tokens for bridge contract
+      const approveTx = await contractService.approveToken(tokenAddress, bridgeAmount);
+      await contractService.waitForTransaction(approveTx.hash);
+
+      // Then create bridge request
       const tx = await contractService.createBridgeRequest(tokenAddress, bridgeAmount, targetChain);
       const receipt = await contractService.waitForTransaction(tx.hash);
       

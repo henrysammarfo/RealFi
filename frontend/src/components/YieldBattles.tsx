@@ -216,7 +216,7 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
   };
 
   const handleWithdraw = async () => {
-    if (!userPosition || !userPosition.depositedAmount) {
+    if (!userPosition || !userPosition.depositedAmount || userPosition.depositedAmount === '0.0') {
       setError('No funds to withdraw');
       return;
     }
@@ -226,7 +226,7 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
       setError(null);
       setSuccess(null);
 
-      const withdrawTx = await contractService.withdraw(userPosition.depositedAmount);
+      const withdrawTx = await contractService.withdrawAll();
       const receipt = await contractService.waitForTransaction(withdrawTx.hash);
       
       setSuccess(`Successfully withdrawn! Transaction: ${receipt.hash}`);

@@ -49,13 +49,23 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ className = '' }) => {
       // Get leaderboard stats from live contract
       const leaderboardContract = contractService.getContract('Leaderboard');
       if (leaderboardContract) {
-        const [totalUsers, totalBattles, topUser, topScore] = await leaderboardContract.getLeaderboardStats();
-        setStats({
-          totalUsers: Number(totalUsers),
-          totalBattles: Number(totalBattles),
-          topUser: topUser,
-          topScore: Number(topScore)
-        });
+        try {
+          const [totalUsers, totalBattles, topUser, topScore] = await leaderboardContract.getLeaderboardStats();
+          setStats({
+            totalUsers: Number(totalUsers),
+            totalBattles: Number(totalBattles),
+            topUser: topUser,
+            topScore: Number(topScore)
+          });
+        } catch (error) {
+          console.log('Leaderboard stats not available yet');
+          setStats({
+            totalUsers: 0,
+            totalBattles: 0,
+            topUser: '0x0000000000000000000000000000000000000000',
+            topScore: 0
+          });
+        }
       }
     } catch (error: any) {
       console.error('Failed to load leaderboard:', error);
