@@ -104,11 +104,11 @@ RealFi/
 
 ```
 RealFiToken: 0x7941e8df64Ce12751e8823A058ebE9872371eFAc
-UserProfile: 0x42E3F51Ab897410B03655c00049fA2F0fCE9f056
-YieldVault: 0x222160A709F194ED7a34CeF0207271e4075B245D
-Leaderboard: 0x9de742296f6F680A3F953a7bfc5a6F6f9a52aC9d
-CrossChainBridge: 0xeF57972f97F13a5833a666FAB24b08Ef59f1CA3A
-AIStrategy: 0x917b514C0B0cf8e174c9B5379e0cbc5527B25bb6
+UserProfile: 0x6C76a75860F150DC1A1fD3b369Dde113De02aD55
+YieldVault: 0x34F50ebC45BAeEdA521652280FbfF294E39E896D
+Leaderboard: 0x5D3235c4eB39f5c3729e75932D62E40f77D8e70f
+CrossChainBridge: 0x9F54700Ae37615C4D751FEE27138A1Cc4276e43d
+AIStrategy: 0x72A2dF456B5BF22A87BB56cC08BAf3037250cd01
 ```
 
 **Status**: All contracts successfully deployed and verified on Somnia Testnet
@@ -126,11 +126,11 @@ AIStrategy: 0x917b514C0B0cf8e174c9B5379e0cbc5527B25bb6
 
 **Explorer Links**:
 - [RealFiToken](https://shannon-explorer.somnia.network/address/0x7941e8df64Ce12751e8823A058ebE9872371eFAc)
-- [UserProfile](https://shannon-explorer.somnia.network/address/0x42E3F51Ab897410B03655c00049fA2F0fCE9f056)
-- [YieldVault](https://shannon-explorer.somnia.network/address/0x222160A709F194ED7a34CeF0207271e4075B245D)
-- [Leaderboard](https://shannon-explorer.somnia.network/address/0x9de742296f6F680A3F953a7bfc5a6F6f9a52aC9d)
-- [CrossChainBridge](https://shannon-explorer.somnia.network/address/0xeF57972f97F13a5833a666FAB24b08Ef59f1CA3A)
-- [AIStrategy](https://shannon-explorer.somnia.network/address/0x917b514C0B0cf8e174c9B5379e0cbc5527B25bb6)
+- [UserProfile](https://shannon-explorer.somnia.network/address/0x6C76a75860F150DC1A1fD3b369Dde113De02aD55)
+- [YieldVault](https://shannon-explorer.somnia.network/address/0x34F50ebC45BAeEdA521652280FbfF294E39E896D)
+- [Leaderboard](https://shannon-explorer.somnia.network/address/0x5D3235c4eB39f5c3729e75932D62E40f77D8e70f)
+- [CrossChainBridge](https://shannon-explorer.somnia.network/address/0x9F54700Ae37615C4D751FEE27138A1Cc4276e43d)
+- [AIStrategy](https://shannon-explorer.somnia.network/address/0x72A2dF456B5BF22A87BB56cC08BAf3037250cd01)
 
 ## 🎮 Usage
 

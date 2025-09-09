@@ -9,7 +9,6 @@ import AIStrategies from './AIStrategies';
 import WalletConnect from './WalletConnect';
 import TransactionTracker from './TransactionTracker';
 import TokenFaucet from './TokenFaucet';
-import ContractTest from './ContractTest';
 
 interface DashboardStats {
   totalUsers: number;
@@ -189,7 +188,6 @@ const Dashboard: React.FC = () => {
           <div className="space-y-6">
             {activeTab === 'profile' && (
               <div className="space-y-6">
-                <ContractTest />
                 <TokenFaucet />
                 <UserProfile />
               </div>
