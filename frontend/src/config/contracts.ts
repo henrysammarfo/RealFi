@@ -2,12 +2,12 @@
 // All addresses are live on Somnia Testnet (Chain ID: 50312)
 
 export const CONTRACT_ADDRESSES = {
-  RealFiToken: process.env.REACT_APP_REALFI_TOKEN_ADDRESS || '0xd054617a413a7B3e4d401799572AE378C283C91f',
-  UserProfile: process.env.REACT_APP_USER_PROFILE_ADDRESS || '0x2525bd88ccf6F0765B819B0bb1F4D71E543F62D4',
-  YieldVault: process.env.REACT_APP_YIELD_VAULT_ADDRESS || '0xC2852Dac15Ec1FdA7697c06FcE436DaEA98ac799',
-  Leaderboard: process.env.REACT_APP_LEADERBOARD_ADDRESS || '0x2F9138f110298F61ff2484C71ab2029D2eAe193A',
-  CrossChainBridge: process.env.REACT_APP_CROSS_CHAIN_BRIDGE_ADDRESS || '0x8F72b9C47b8E5354a0CD3238Cc175f69dCCa1585',
-  AIStrategy: process.env.REACT_APP_AI_STRATEGY_ADDRESS || '0x526df3F081aF7Cd3410b7c5A10CB54B4D1FA6996',
+  RealFiToken: process.env.REACT_APP_REALFI_TOKEN_ADDRESS || '0x1d82f5Da580b43b708617A8947Eeab0D38152077',
+  UserProfile: process.env.REACT_APP_USER_PROFILE_ADDRESS || '0x355880a1b0848eB0e7064A22F365a68E30AdC7D7',
+  YieldVault: process.env.REACT_APP_YIELD_VAULT_ADDRESS || '0x119c28301Ba52FC26ad815918441818F74091167',
+  Leaderboard: process.env.REACT_APP_LEADERBOARD_ADDRESS || '0xA312d5630658BEb8e8B8AB581644E15B60646EAe',
+  CrossChainBridge: process.env.REACT_APP_CROSS_CHAIN_BRIDGE_ADDRESS || '0x99b73Eee17e17553C824FCBC694fd01F31908193',
+  AIStrategy: process.env.REACT_APP_AI_STRATEGY_ADDRESS || '0x72A2dF456B5BF22A87BB56cC08BAf3037250cd01',
 };
 
 // Network configuration for MetaMask
@@ -93,6 +93,7 @@ export const CONTRACT_ABIS = {
   YieldVault: [
     "function deposit(uint256 amount)",
     "function withdraw(uint256 amount)",
+    "function withdrawAll()",
     "function joinBattle(uint256 battleId, uint256 amount)",
     "function createBattle(string memory name, uint256 entryFee, uint256 maxParticipants, uint256 duration)",
     "function claimYield()",

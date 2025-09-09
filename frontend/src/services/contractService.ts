@@ -219,7 +219,8 @@ class ContractServiceClass implements ContractService {
     if (!contract) throw new Error('YieldVault contract not available');
     
     const entryFeeWei = ethers.parseEther(entryFee);
-    return await contract.createBattle(name, entryFeeWei, maxParticipants, duration);
+    const durationSeconds = duration * 3600; // Convert hours to seconds
+    return await contract.createBattle(name, entryFeeWei, maxParticipants, durationSeconds);
   }
 
   async joinBattle(battleId: number, amount: string): Promise<ethers.TransactionResponse> {

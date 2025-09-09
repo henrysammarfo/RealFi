@@ -166,7 +166,7 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
 
       // First approve tokens
       const approveTx = await contractService.approveToken(
-        '0xC2852Dac15Ec1FdA7697c06FcE436DaEA98ac799',
+        '0x119c28301Ba52FC26ad815918441818F74091167',
         depositAmount
       );
       await contractService.waitForTransaction(approveTx.hash);
@@ -210,7 +210,7 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
 
       // First approve tokens
       const approveTx = await contractService.approveToken(
-        '0xC2852Dac15Ec1FdA7697c06FcE436DaEA98ac799',
+        '0x119c28301Ba52FC26ad815918441818F74091167',
         depositAmount
       );
       await contractService.waitForTransaction(approveTx.hash);

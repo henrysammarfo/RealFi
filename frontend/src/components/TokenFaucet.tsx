@@ -91,9 +91,6 @@ const TokenFaucet: React.FC<TokenFaucetProps> = ({ className = '' }) => {
           min="1"
           max="10000"
         />
-        <p className="text-xs text-gray-500 mt-1">
-          Maximum 10,000 RFT tokens per mint. Use responsibly for testing purposes.
-        </p>
         <button
           onClick={handleMintTokens}
           disabled={loading || !isConnected}
