@@ -65,31 +65,28 @@ const AIStrategies: React.FC<AIStrategiesProps> = ({ className = '' }) => {
 
       // Load available strategies from live contract only
       const strategiesList: AIStrategy[] = [];
-      const aiStrategyContract = contractService.getContract('AIStrategy');
       
-      if (aiStrategyContract) {
-        // Try to load strategies 1-10 from live contract
-        for (let i = 1; i <= 10; i++) {
-          try {
-            const strategyData = await aiStrategyContract.getStrategyDetails(i);
-            strategiesList.push({
-              strategyId: i,
-              name: strategyData[0] || `Strategy ${i}`,
-              description: strategyData[1] || `AI-powered strategy ${i}`,
-              riskLevel: Number(strategyData[2]) || 1,
-              expectedReturn: Number(strategyData[3]) || 0,
-              minDeposit: Number(strategyData[4]) || 0,
-              maxDeposit: Number(strategyData[5]) || 0,
-              duration: Number(strategyData[6]) || 0,
-              successRate: Number(strategyData[7]) || 0,
-              isActive: strategyData[8] !== undefined ? strategyData[8] : false,
-              totalAdopted: Number(strategyData[9]) || 0,
-              totalReturn: Number(strategyData[10]) || 0
-            });
-          } catch (error) {
-            // Strategy not found in contract, skip
-            console.log(`Strategy ${i} not found in live contract`);
-          }
+      // Try to load strategies 1-10 from live contract
+      for (let i = 1; i <= 10; i++) {
+        try {
+          const strategyData = await contractService.getStrategyDetails(i);
+          strategiesList.push({
+            strategyId: i,
+            name: strategyData.name || `Strategy ${i}`,
+            description: strategyData.description || `AI-powered strategy ${i}`,
+            riskLevel: strategyData.riskLevel || 1,
+            expectedReturn: strategyData.expectedReturn || 0,
+            minDeposit: strategyData.minDeposit || 0,
+            maxDeposit: strategyData.maxDeposit || 0,
+            duration: strategyData.duration || 0,
+            successRate: strategyData.successRate || 0,
+            isActive: strategyData.isActive !== undefined ? strategyData.isActive : false,
+            totalAdopted: strategyData.totalAdopted || 0,
+            totalReturn: strategyData.totalReturn || 0
+          });
+        } catch (error) {
+          // Strategy not found in contract, skip
+          console.log(`Strategy ${i} not found in live contract`);
         }
       }
 
@@ -115,17 +112,14 @@ const AIStrategies: React.FC<AIStrategiesProps> = ({ className = '' }) => {
 
   const loadMarketCondition = async () => {
     try {
-      const aiStrategyContract = contractService.getContract('AIStrategy');
-      if (aiStrategyContract) {
-        const marketData = await aiStrategyContract.getCurrentMarketCondition();
-        setMarketCondition({
-          volatility: Number(marketData[0]) || 0,
-          trend: Number(marketData[1]) || 0,
-          liquidity: Number(marketData[2]) || 0,
-          risk: Number(marketData[3]) || 0,
-          opportunity: Number(marketData[4]) || 0
-        });
-      }
+      const marketData = await contractService.getCurrentMarketCondition();
+      setMarketCondition({
+        volatility: marketData.volatility || 0,
+        trend: marketData.trend || 0,
+        liquidity: marketData.liquidity || 0,
+        risk: marketData.risk || 0,
+        opportunity: marketData.opportunity || 0
+      });
     } catch (error: any) {
       console.error('Failed to load market condition:', error);
       setError('Failed to load live market data from contract');
