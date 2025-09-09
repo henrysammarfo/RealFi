@@ -255,8 +255,8 @@ const AIStrategies: React.FC<AIStrategiesProps> = ({ className = '' }) => {
               <div className="text-xs text-orange-600 mt-1">Live from contract</div>
             </div>
             <div className="bg-indigo-50 rounded-lg p-4">
-              <div className="text-2xl font-bold text-indigo-600">{marketCondition.opportunity}%</div>
-              <div className="text-sm text-indigo-800">Opportunity</div>
+              <div className="text-sm font-bold text-indigo-600">{formatTime(marketCondition.opportunity)}</div>
+              <div className="text-sm text-indigo-800">Last Update</div>
               <div className="text-xs text-indigo-600 mt-1">Live from contract</div>
             </div>
           </div>

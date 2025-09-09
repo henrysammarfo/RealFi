@@ -422,7 +422,7 @@ class ContractServiceClass implements ContractService {
       trend: Number(marketData[1]),
       liquidity: Number(marketData[2]),
       risk: Number(marketData[3]),
-      opportunity: Number(marketData[4])
+      opportunity: Number(marketData[4]) // This is a timestamp, not a large number
     };
   }
 

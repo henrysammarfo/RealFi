@@ -332,21 +332,29 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
         <div className="bg-white rounded-lg shadow p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Position</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-blue-50 rounded-lg p-4">
-              <div className="text-2xl font-bold text-blue-600">{userPosition.depositedAmount} RFT</div>
-              <div className="text-sm text-blue-800">Deposited Amount</div>
+            <div className="bg-blue-50 rounded-lg p-4 min-h-[100px] flex flex-col justify-center">
+              <div className="text-lg font-bold text-blue-600 truncate" title={`${userPosition.depositedAmount} RFT`}>
+                {parseFloat(userPosition.depositedAmount).toFixed(4)} RFT
+              </div>
+              <div className="text-sm text-blue-800 mt-1">Deposited Amount</div>
             </div>
-            <div className="bg-green-50 rounded-lg p-4">
-              <div className="text-2xl font-bold text-green-600">{userPosition.yieldEarned} RFT</div>
-              <div className="text-sm text-green-800">Yield Earned</div>
+            <div className="bg-green-50 rounded-lg p-4 min-h-[100px] flex flex-col justify-center">
+              <div className="text-lg font-bold text-green-600 truncate" title={`${userPosition.yieldEarned} RFT`}>
+                {parseFloat(userPosition.yieldEarned).toFixed(4)} RFT
+              </div>
+              <div className="text-sm text-green-800 mt-1">Yield Earned</div>
             </div>
-            <div className="bg-purple-50 rounded-lg p-4">
-              <div className="text-2xl font-bold text-purple-600">{formatTime(userPosition.depositTime)}</div>
-              <div className="text-sm text-purple-800">Deposit Time</div>
+            <div className="bg-purple-50 rounded-lg p-4 min-h-[100px] flex flex-col justify-center">
+              <div className="text-sm font-bold text-purple-600 truncate" title={formatTime(userPosition.depositTime)}>
+                {new Date(userPosition.depositTime * 1000).toLocaleDateString()}
+              </div>
+              <div className="text-sm text-purple-800 mt-1">Deposit Time</div>
             </div>
-            <div className="bg-orange-50 rounded-lg p-4">
-              <div className="text-2xl font-bold text-orange-600">{userPosition.isActive ? 'Active' : 'Inactive'}</div>
-              <div className="text-sm text-orange-800">Status</div>
+            <div className="bg-orange-50 rounded-lg p-4 min-h-[100px] flex flex-col justify-center">
+              <div className="text-lg font-bold text-orange-600">
+                {userPosition.isActive ? 'Active' : 'Inactive'}
+              </div>
+              <div className="text-sm text-orange-800 mt-1">Status</div>
             </div>
           </div>
           
@@ -468,10 +476,10 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
         ) : (
           <div className="space-y-4">
             {battles.map((battle) => (
-              <div key={battle.battleId} className="border border-gray-200 rounded-lg p-4">
+              <div key={battle.battleId} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer" onClick={() => setSelectedBattle(battle.battleId)}>
                 <div className="flex justify-between items-start">
                   <div>
-                    <h4 className="text-lg font-semibold text-gray-900">{battle.name}</h4>
+                    <h4 className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors">{battle.name}</h4>
                     <p className="text-sm text-gray-600">Battle ID: {battle.battleId}</p>
                     <p className="text-sm text-gray-600">
                       {formatTime(battle.startTime)} - {formatTime(battle.endTime)}

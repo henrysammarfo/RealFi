@@ -19,6 +19,12 @@ const TokenFaucet: React.FC<TokenFaucetProps> = ({ className = '' }) => {
       return;
     }
 
+    const amount = parseFloat(mintAmount);
+    if (amount <= 0 || amount > 10000) {
+      setError('Amount must be between 1 and 10,000 RFT');
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
@@ -81,10 +87,13 @@ const TokenFaucet: React.FC<TokenFaucetProps> = ({ className = '' }) => {
           value={mintAmount}
           onChange={(e) => setMintAmount(e.target.value)}
           className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="Amount to mint"
+          placeholder="Amount to mint (1-10,000 RFT)"
           min="1"
           max="10000"
         />
+        <p className="text-xs text-gray-500 mt-1">
+          Maximum 10,000 RFT tokens per mint. Use responsibly for testing purposes.
+        </p>
         <button
           onClick={handleMintTokens}
           disabled={loading || !isConnected}
