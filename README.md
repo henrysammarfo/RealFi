@@ -103,12 +103,12 @@ RealFi/
 ### Contract Addresses (Live on Somnia Testnet)
 
 ```
-RealFiToken: 0x8c73284b55cb55EB46Dd42617bA6213037e602e9
-UserProfile: 0x41d87298B54d329872c29ec385367cD4C404e8e6
-YieldVault: 0x2ABa80F8931d52DEE8e6732d213eabe795535660
-Leaderboard: 0x5D3235c4eB39f5c3729e75932D62E40f77D8e70f
-CrossChainBridge: 0x9F54700Ae37615C4D751FEE27138A1Cc4276e43d
-AIStrategy: 0x809303cC124eABCDa2c6aFF9eefEd30EB662362a
+RealFiToken: 0x2758270ED3b61a49dee09485FE659a753c772086
+UserProfile: 0x42E3F51Ab897410B03655c00049fA2F0fCE9f056
+YieldVault: 0x222160A709F194ED7a34CeF0207271e4075B245D
+Leaderboard: 0x9de742296f6F680A3F953a7bfc5a6F6f9a52aC9d
+CrossChainBridge: 0xeF57972f97F13a5833a666FAB24b08Ef59f1CA3A
+AIStrategy: 0x917b514C0B0cf8e174c9B5379e0cbc5527B25bb6
 ```
 
 **Status**: All contracts successfully deployed and verified on Somnia Testnet
@@ -125,12 +125,12 @@ AIStrategy: 0x809303cC124eABCDa2c6aFF9eefEd30EB662362a
 **Total**: 6/6 contracts deployed successfully
 
 **Explorer Links**:
-- [RealFiToken](https://shannon-explorer.somnia.network/address/0x8c73284b55cb55EB46Dd42617bA6213037e602e9)
-- [UserProfile](https://shannon-explorer.somnia.network/address/0x41d87298B54d329872c29ec385367cD4C404e8e6)
-- [YieldVault](https://shannon-explorer.somnia.network/address/0x2ABa80F8931d52DEE8e6732d213eabe795535660)
-- [Leaderboard](https://shannon-explorer.somnia.network/address/0x5D3235c4eB39f5c3729e75932D62E40f77D8e70f)
-- [CrossChainBridge](https://shannon-explorer.somnia.network/address/0x9F54700Ae37615C4D751FEE27138A1Cc4276e43d)
-- [AIStrategy](https://shannon-explorer.somnia.network/address/0x809303cC124eABCDa2c6aFF9eefEd30EB662362a)
+- [RealFiToken](https://shannon-explorer.somnia.network/address/0x2758270ED3b61a49dee09485FE659a753c772086)
+- [UserProfile](https://shannon-explorer.somnia.network/address/0x42E3F51Ab897410B03655c00049fA2F0fCE9f056)
+- [YieldVault](https://shannon-explorer.somnia.network/address/0x222160A709F194ED7a34CeF0207271e4075B245D)
+- [Leaderboard](https://shannon-explorer.somnia.network/address/0x9de742296f6F680A3F953a7bfc5a6F6f9a52aC9d)
+- [CrossChainBridge](https://shannon-explorer.somnia.network/address/0xeF57972f97F13a5833a666FAB24b08Ef59f1CA3A)
+- [AIStrategy](https://shannon-explorer.somnia.network/address/0x917b514C0B0cf8e174c9B5379e0cbc5527B25bb6)
 
 ## 🎮 Usage
 

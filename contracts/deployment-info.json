@@ -1,0 +1,14 @@
+{
+  "network": "somnia-testnet",
+  "chainId": 420,
+  "deployer": "0x2F914bcbAD5bf4967BbB11e4372200b7c7594AEB",
+  "timestamp": "2025-09-09T12:32:12.982Z",
+  "contracts": {
+    "RealFiToken": "0x2758270ED3b61a49dee09485FE659a753c772086",
+    "UserProfile": "0x42E3F51Ab897410B03655c00049fA2F0fCE9f056",
+    "YieldVault": "0x222160A709F194ED7a34CeF0207271e4075B245D",
+    "Leaderboard": "0x9de742296f6F680A3F953a7bfc5a6F6f9a52aC9d",
+    "CrossChainBridge": "0xeF57972f97F13a5833a666FAB24b08Ef59f1CA3A",
+    "AIStrategy": "0x917b514C0B0cf8e174c9B5379e0cbc5527B25bb6"
+  }
+}
