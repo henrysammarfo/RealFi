@@ -276,6 +276,20 @@ class ContractServiceClass implements ContractService {
     return Number(rank);
   }
 
+  async getUserScoreDetails(address: string) {
+    const contract = this.getContract('Leaderboard');
+    if (!contract) throw new Error('Leaderboard contract not available');
+    
+    const [yieldScore, battleScore, totalScore, rank, lastUpdate] = await contract.getUserScoreDetails(address);
+    return {
+      yieldScore: Number(yieldScore),
+      battleScore: Number(battleScore),
+      totalScore: Number(totalScore),
+      rank: Number(rank),
+      lastUpdate: Number(lastUpdate)
+    };
+  }
+
   // CrossChainBridge methods
   async createBridgeRequest(tokenAddress: string, amount: string, targetChain: number): Promise<ethers.TransactionResponse> {
     const contract = this.getContract('CrossChainBridge');
@@ -291,6 +305,23 @@ class ContractServiceClass implements ContractService {
     
     const requestIds = await contract.getUserBridgeRequests(address);
     return requestIds.map((id: any) => Number(id));
+  }
+
+  async getBridgeRequest(requestId: number) {
+    const contract = this.getContract('CrossChainBridge');
+    if (!contract) throw new Error('CrossChainBridge contract not available');
+    
+    const request = await contract.getBridgeRequest(requestId);
+    return {
+      user: request[0],
+      token: request[1],
+      amount: request[2].toString(),
+      sourceChain: Number(request[3]),
+      targetChain: Number(request[4]),
+      status: Number(request[5]),
+      timestamp: Number(request[6]),
+      transactionHash: request[7] || ''
+    };
   }
 
   // AIStrategy methods
