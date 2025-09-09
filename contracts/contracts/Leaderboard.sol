@@ -87,7 +87,8 @@ contract Leaderboard is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reen
      * @param _user The user address
      * @param _username The user's username
      */
-    function registerUser(address _user, string memory _username) external onlyOwner {
+    function registerUser(address _user, string memory _username) external {
+        require(msg.sender == owner() || msg.sender == userProfileContract, "Unauthorized");
         require(!isRegistered[_user], "User already registered");
         require(bytes(_username).length > 0, "Invalid username");
         

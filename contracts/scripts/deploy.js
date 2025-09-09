@@ -74,6 +74,11 @@ async function main() {
   // Setup initial configuration
   console.log("\n⚙️ Setting up initial configuration...");
   
+  // Set leaderboard contract address in UserProfile
+  console.log("Setting up contract references...");
+  await userProfile.setLeaderboardContract(leaderboardAddress);
+  console.log("✅ Contract references set");
+  
   // Create some initial yield battles
   console.log("Creating initial yield battles...");
   await yieldVault.createBattle("Welcome Battle", ethers.parseEther("0.001"), 50, 7 * 24 * 60 * 60); // 7 days

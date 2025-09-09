@@ -35,6 +35,9 @@ const TokenFaucet: React.FC<TokenFaucetProps> = ({ className = '' }) => {
       const receipt = await contractService.waitForTransaction(tx.hash);
       
       setSuccess(`Successfully minted ${mintAmount} RFT tokens! Transaction: ${receipt.hash}`);
+      
+      // Trigger a custom event to refresh other components
+      window.dispatchEvent(new CustomEvent('userDataUpdated'));
     } catch (error: any) {
       console.error('Failed to mint tokens:', error);
       setError(error.message || 'Failed to mint tokens');

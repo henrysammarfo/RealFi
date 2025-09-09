@@ -166,7 +166,7 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
 
       // First approve tokens
       const approveTx = await contractService.approveToken(
-        '0x119c28301Ba52FC26ad815918441818F74091167',
+        '0x2ABa80F8931d52DEE8e6732d213eabe795535660',
         depositAmount
       );
       await contractService.waitForTransaction(approveTx.hash);
@@ -183,6 +183,9 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
       // Reload data
       await loadUserPosition();
       await loadBattles();
+      
+      // Trigger a custom event to refresh other components
+      window.dispatchEvent(new CustomEvent('userDataUpdated'));
     } catch (error: any) {
       console.error('Failed to join battle:', error);
       setError(error.message || 'Failed to join battle');
@@ -210,7 +213,7 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
 
       // First approve tokens
       const approveTx = await contractService.approveToken(
-        '0x119c28301Ba52FC26ad815918441818F74091167',
+        '0x2ABa80F8931d52DEE8e6732d213eabe795535660',
         depositAmount
       );
       await contractService.waitForTransaction(approveTx.hash);
@@ -224,6 +227,9 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
       
       // Reload data
       await loadUserPosition();
+      
+      // Trigger a custom event to refresh other components
+      window.dispatchEvent(new CustomEvent('userDataUpdated'));
     } catch (error: any) {
       console.error('Failed to deposit:', error);
       setError(error.message || 'Failed to deposit');
@@ -250,6 +256,9 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
       
       // Reload data
       await loadUserPosition();
+      
+      // Trigger a custom event to refresh other components
+      window.dispatchEvent(new CustomEvent('userDataUpdated'));
     } catch (error: any) {
       console.error('Failed to withdraw:', error);
       setError(error.message || 'Failed to withdraw');
@@ -271,6 +280,9 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
       
       // Reload data
       await loadUserPosition();
+      
+      // Trigger a custom event to refresh other components
+      window.dispatchEvent(new CustomEvent('userDataUpdated'));
     } catch (error: any) {
       console.error('Failed to claim yield:', error);
       setError(error.message || 'Failed to claim yield');

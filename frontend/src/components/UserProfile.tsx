@@ -34,6 +34,18 @@ const UserProfile: React.FC<UserProfileProps> = ({ className = '' }) => {
     }
   }, [isConnected, account]);
 
+  // Listen for user data updates from other components
+  useEffect(() => {
+    const handleUserDataUpdate = () => {
+      if (isConnected && account) {
+        refreshProfile();
+      }
+    };
+
+    window.addEventListener('userDataUpdated', handleUserDataUpdate);
+    return () => window.removeEventListener('userDataUpdated', handleUserDataUpdate);
+  }, [isConnected, account]);
+
   const checkUserRegistration = async () => {
     if (!account) return;
 
@@ -70,6 +82,13 @@ const UserProfile: React.FC<UserProfileProps> = ({ className = '' }) => {
       setTokenBalance(balance);
     } catch (error: any) {
       console.error('Failed to load token balance:', error);
+    }
+  };
+
+  const refreshProfile = async () => {
+    if (isConnected && account) {
+      await checkUserRegistration();
+      await loadTokenBalance();
     }
   };
 
@@ -129,7 +148,15 @@ const UserProfile: React.FC<UserProfileProps> = ({ className = '' }) => {
     <div className={`space-y-6 ${className}`}>
       {/* Header */}
       <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">User Profile</h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold text-gray-900">User Profile</h2>
+          <button
+            onClick={refreshProfile}
+            className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700"
+          >
+            Refresh
+          </button>
+        </div>
         <p className="text-gray-600">Manage your profile and view your statistics</p>
       </div>
 

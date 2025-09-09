@@ -6,6 +6,10 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
+interface ILeaderboard {
+    function registerUser(address _user, string memory _username) external;
+}
+
 /**
  * @title UserProfile
  * @dev Manages user registration and profile data for RealFi DeFi platform
@@ -39,6 +43,9 @@ contract UserProfile is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reen
     uint256 public totalUsers;
     uint256 public activeUsers;
     
+    // Contract references
+    address public leaderboardContract;
+    
     // Constants
     uint256 public constant MIN_USERNAME_LENGTH = 3;
     uint256 public constant MAX_USERNAME_LENGTH = 20;
@@ -57,6 +64,15 @@ contract UserProfile is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reen
         __Ownable_init(_owner);
         __UUPSUpgradeable_init();
         __ReentrancyGuard_init();
+    }
+    
+    /**
+     * @dev Set the leaderboard contract address
+     * @param _leaderboardContract The address of the leaderboard contract
+     */
+    function setLeaderboardContract(address _leaderboardContract) external onlyOwner {
+        require(_leaderboardContract != address(0), "Invalid leaderboard contract address");
+        leaderboardContract = _leaderboardContract;
     }
     
     /**
@@ -92,6 +108,15 @@ contract UserProfile is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reen
         isRegistered[msg.sender] = true;
         totalUsers++;
         activeUsers++;
+        
+        // Register user in leaderboard if contract is set
+        if (leaderboardContract != address(0)) {
+            try ILeaderboard(leaderboardContract).registerUser(msg.sender, _username) {
+                // Successfully registered in leaderboard
+            } catch {
+                // Continue even if leaderboard registration fails
+            }
+        }
         
         emit UserRegistered(msg.sender, _username, block.timestamp);
     }

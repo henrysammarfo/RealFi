@@ -278,13 +278,26 @@ class ContractServiceClass implements ContractService {
   }
 
   async getTotalStats(): Promise<{ totalUsers: number; totalBattles: number }> {
-    const contract = this.getContract('Leaderboard');
-    if (!contract) throw new Error('Leaderboard contract not available');
+    const leaderboardContract = this.getContract('Leaderboard');
+    if (!leaderboardContract) throw new Error('Leaderboard contract not available');
     
-    const [totalUsers, lastUpdateTime, topUserAddress, topUserScore] = await contract.getLeaderboardStats();
+    const [totalUsers, lastUpdateTime, topUserAddress, topUserScore] = await leaderboardContract.getLeaderboardStats();
+    
+    // Get total battles from YieldVault contract
+    const yieldVaultContract = this.getContract('YieldVault');
+    let totalBattles = 0;
+    if (yieldVaultContract) {
+      try {
+        const [totalVaultValue, totalYieldDistributed, nextBattleId] = await yieldVaultContract.getVaultStats();
+        totalBattles = Number(nextBattleId) - 1; // Subtract 1 because nextBattleId is the next ID to be used
+      } catch (error) {
+        console.error('Failed to get battle count:', error);
+      }
+    }
+    
     return {
       totalUsers: Number(totalUsers),
-      totalBattles: 0 // This would need to be tracked separately
+      totalBattles: totalBattles
     };
   }
 
