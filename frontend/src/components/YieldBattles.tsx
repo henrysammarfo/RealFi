@@ -148,6 +148,12 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
       return;
     }
 
+    const amount = parseFloat(depositAmount);
+    if (amount < 0.01 || amount > 100) {
+      setError('Deposit amount must be between 0.01 and 100 RFT');
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
@@ -183,6 +189,12 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
   const handleDeposit = async () => {
     if (!depositAmount) {
       setError('Please enter deposit amount');
+      return;
+    }
+
+    const amount = parseFloat(depositAmount);
+    if (amount < 0.01 || amount > 100) {
+      setError('Deposit amount must be between 0.01 and 100 RFT');
       return;
     }
 
@@ -412,14 +424,19 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
       {/* Regular Deposit */}
       <div className="bg-white rounded-lg shadow p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Regular Deposit</h3>
+        <p className="text-sm text-gray-600 mb-4">
+          Deposit RFT tokens to earn 5% APY. Minimum: 0.01 RFT | Maximum: 100 RFT
+        </p>
         <div className="flex space-x-4">
           <input
             type="number"
             value={depositAmount}
             onChange={(e) => setDepositAmount(e.target.value)}
             className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="Enter amount in RFT"
-            step="0.1"
+            placeholder="0.01 - 100 RFT"
+            min="0.01"
+            max="100"
+            step="0.01"
           />
           <button
             onClick={handleDeposit}
@@ -520,9 +537,14 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
                 value={depositAmount}
                 onChange={(e) => setDepositAmount(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="0.0"
-                step="0.1"
+                placeholder="0.01 - 100 RFT"
+                min="0.01"
+                max="100"
+                step="0.01"
               />
+              <p className="text-xs text-gray-500 mt-1">
+                Minimum: 0.01 RFT | Maximum: 100 RFT
+              </p>
             </div>
             <div className="flex space-x-4">
               <button
