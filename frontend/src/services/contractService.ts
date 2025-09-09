@@ -130,7 +130,24 @@ class ContractServiceClass implements ContractService {
     const contract = this.getContract('UserProfile');
     if (!contract) throw new Error('UserProfile contract not available');
     
-    return await contract.registerUser(username);
+    const tx = await contract.registerUser(username);
+    
+    // Also register user in leaderboard (since the deployed contract doesn't have this integration)
+    try {
+      const leaderboardContract = this.getContract('Leaderboard');
+      if (leaderboardContract) {
+        // Get the user's address from the transaction
+        const receipt = await tx.wait();
+        const userAddress = receipt.from;
+        
+        // Register user in leaderboard
+        await leaderboardContract.registerUser(userAddress, username);
+      }
+    } catch (error) {
+      console.log('Leaderboard registration failed (this is expected for existing users):', error.message);
+    }
+    
+    return tx;
   }
 
   async updateProfile(username: string): Promise<ethers.TransactionResponse> {

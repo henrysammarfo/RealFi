@@ -7,18 +7,20 @@ async function main() {
   console.log('Deployer address:', deployer.address);
 
   // Get the deployed Leaderboard contract
-  const LeaderboardAddress = '0xab978B200e99b1Cd110D62a4731086ce7a0D1FA4';
+  const LeaderboardAddress = '0x5D3235c4eB39f5c3729e75932D62E40f77D8e70f';
   const Leaderboard = await ethers.getContractFactory('Leaderboard');
   const leaderboard = Leaderboard.attach(LeaderboardAddress);
 
   console.log('Leaderboard contract address:', LeaderboardAddress);
 
   try {
-    // Test getTotalStats
-    console.log('\n📊 Testing getTotalStats...');
-    const [totalUsers, totalBattles] = await leaderboard.getTotalStats();
-    console.log('Total Users:', totalUsers.toString());
-    console.log('Total Battles:', totalBattles.toString());
+    // Test getLeaderboardStats
+    console.log('\n📊 Testing getLeaderboardStats...');
+    const [totalUsers, lastUpdateTime, topUserAddress, topUserScore] = await leaderboard.getLeaderboardStats();
+    console.log('Total Users:', Number(totalUsers));
+    console.log('Last Update Time:', new Date(Number(lastUpdateTime) * 1000).toLocaleString());
+    console.log('Top User Address:', topUserAddress);
+    console.log('Top User Score:', Number(topUserScore));
 
     // Test getTopUser
     console.log('\n👑 Testing getTopUser...');
