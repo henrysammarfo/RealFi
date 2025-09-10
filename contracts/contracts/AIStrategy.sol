@@ -531,6 +531,45 @@ contract AIStrategy is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reent
     }
     
     /**
+     * @dev Get detailed user strategy performance
+     * @param _user The user address
+     * @param _strategyIndex The strategy index in user's strategies array
+     * @return strategyId Strategy ID
+     * @return depositAmount Deposit amount
+     * @return startTime Start time
+     * @return endTime End time
+     * @return expectedReturn Expected return
+     * @return actualReturn Actual return achieved
+     * @return isActive Whether strategy is active
+     * @return performanceScore Performance score (0-200)
+     */
+    function getUserStrategyPerformance(address _user, uint256 _strategyIndex) external view returns (
+        uint256 strategyId,
+        uint256 depositAmount,
+        uint256 startTime,
+        uint256 endTime,
+        uint256 expectedReturn,
+        uint256 actualReturn,
+        bool isActive,
+        uint256 performanceScore
+    ) {
+        require(_strategyIndex < userStrategies[_user].length, "Strategy index out of bounds");
+        
+        UserStrategy storage userStrategy = userStrategies[_user][_strategyIndex];
+        
+        return (
+            userStrategy.strategyId,
+            userStrategy.depositAmount,
+            userStrategy.startTime,
+            userStrategy.endTime,
+            userStrategy.expectedReturn,
+            userStrategy.actualReturn,
+            userStrategy.isActive,
+            userStrategy.performanceScore
+        );
+    }
+    
+    /**
      * @dev Get strategy details
      * @param _strategyId The strategy ID
      * @return name Strategy name

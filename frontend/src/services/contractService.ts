@@ -480,6 +480,33 @@ class ContractServiceClass implements ContractService {
     }));
   }
 
+  async getUserStrategyPerformance(address: string, strategyIndex: number) {
+    const contract = this.getContract('AIStrategy');
+    if (!contract) throw new Error('AIStrategy contract not available');
+    
+    const [
+      strategyId,
+      depositAmount,
+      startTime,
+      endTime,
+      expectedReturn,
+      actualReturn,
+      isActive,
+      performanceScore
+    ] = await contract.getUserStrategyPerformance(address, strategyIndex);
+    
+    return {
+      strategyId: Number(strategyId),
+      depositAmount: ethers.formatEther(depositAmount),
+      startTime: Number(startTime),
+      endTime: Number(endTime),
+      expectedReturn: ethers.formatEther(expectedReturn),
+      actualReturn: ethers.formatEther(actualReturn),
+      isActive,
+      performanceScore: Number(performanceScore)
+    };
+  }
+
   async getStrategyDetails(strategyId: number) {
     const contract = this.getContract('AIStrategy');
     if (!contract) throw new Error('AIStrategy contract not available');

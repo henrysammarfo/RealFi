@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\Users\\ez\\Desktop\\RealFi\\contracts\\contracts\\AIStrategy.sol": {
-      "lastModificationDate": 1757336336258,
-      "contentHash": "bff0ed4df1687acf6b7780652677634f",
+      "lastModificationDate": 1757500806883,
+      "contentHash": "ec1db266ce58b88b48a74c0435c956de",
       "sourceName": "contracts/AIStrategy.sol",
       "solcConfig": {
         "version": "0.8.22",
