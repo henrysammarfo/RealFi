@@ -52,6 +52,8 @@ const AIStrategies: React.FC<AIStrategiesProps> = ({ className = '' }) => {
 
   useEffect(() => {
     if (isConnected && account) {
+      // Refresh contracts to ensure we're using the latest addresses
+      contractService.refreshContracts();
       loadStrategies();
       loadUserStrategies();
       loadMarketCondition();
@@ -63,13 +65,18 @@ const AIStrategies: React.FC<AIStrategiesProps> = ({ className = '' }) => {
       setLoading(true);
       setError(null);
 
+      console.log('Loading AI strategies from contract...');
+      
       // Load available strategies from live contract only
       const strategiesList: AIStrategy[] = [];
       
       // Try to load strategies 1-10 from live contract
       for (let i = 1; i <= 10; i++) {
         try {
+          console.log(`Loading strategy ${i}...`);
           const strategyData = await contractService.getStrategyDetails(i);
+          console.log(`Strategy ${i} data:`, strategyData);
+          
           strategiesList.push({
             strategyId: i,
             name: strategyData.name || `Strategy ${i}`,
@@ -84,12 +91,14 @@ const AIStrategies: React.FC<AIStrategiesProps> = ({ className = '' }) => {
             totalAdopted: strategyData.totalAdopted || 0,
             totalReturn: strategyData.totalReturn || 0
           });
+          console.log(`Strategy ${i} added to list`);
         } catch (error) {
           // Strategy not found in contract, skip
-          console.log(`Strategy ${i} not found in live contract`);
+          console.log(`Strategy ${i} not found in live contract:`, error);
         }
       }
 
+      console.log(`Total strategies loaded: ${strategiesList.length}`);
       setStrategies(strategiesList);
     } catch (error: any) {
       console.error('Failed to load strategies:', error);
