@@ -105,7 +105,7 @@ RealFi/
 ```
 RealFiToken: 0x7941e8df64Ce12751e8823A058ebE9872371eFAc
 UserProfile: 0x6C76a75860F150DC1A1fD3b369Dde113De02aD55
-YieldVault: 0x34F50ebC45BAeEdA521652280FbfF294E39E896D
+YieldVault: 0x16E4307A045b06B125446FE612860A98DF51f245
 Leaderboard: 0x5D3235c4eB39f5c3729e75932D62E40f77D8e70f
 CrossChainBridge: 0x9F54700Ae37615C4D751FEE27138A1Cc4276e43d
 AIStrategy: 0x72A2dF456B5BF22A87BB56cC08BAf3037250cd01
@@ -127,7 +127,7 @@ AIStrategy: 0x72A2dF456B5BF22A87BB56cC08BAf3037250cd01
 **Explorer Links**:
 - [RealFiToken](https://shannon-explorer.somnia.network/address/0x7941e8df64Ce12751e8823A058ebE9872371eFAc)
 - [UserProfile](https://shannon-explorer.somnia.network/address/0x6C76a75860F150DC1A1fD3b369Dde113De02aD55)
-- [YieldVault](https://shannon-explorer.somnia.network/address/0x34F50ebC45BAeEdA521652280FbfF294E39E896D)
+- [YieldVault](https://shannon-explorer.somnia.network/address/0x16E4307A045b06B125446FE612860A98DF51f245)
 - [Leaderboard](https://shannon-explorer.somnia.network/address/0x5D3235c4eB39f5c3729e75932D62E40f77D8e70f)
 - [CrossChainBridge](https://shannon-explorer.somnia.network/address/0x9F54700Ae37615C4D751FEE27138A1Cc4276e43d)
 - [AIStrategy](https://shannon-explorer.somnia.network/address/0x72A2dF456B5BF22A87BB56cC08BAf3037250cd01)
