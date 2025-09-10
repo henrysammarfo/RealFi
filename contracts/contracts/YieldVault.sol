@@ -117,7 +117,7 @@ contract YieldVault is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reent
         uint256 _entryFee,
         uint256 _maxParticipants,
         uint256 _duration
-    ) external onlyOwner {
+    ) external {
         require(_entryFee >= MIN_ENTRY_FEE && _entryFee <= MAX_ENTRY_FEE, "Invalid entry fee");
         require(_maxParticipants > 0 && _maxParticipants <= DEFAULT_MAX_PARTICIPANTS, "Invalid max participants");
         require(_duration > 0 && _duration <= 30 days, "Invalid duration");
