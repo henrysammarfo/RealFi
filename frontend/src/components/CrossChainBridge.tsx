@@ -10,7 +10,7 @@ interface BridgeRequest {
   amount: string;
   sourceChain: number;
   targetChain: number;
-  status: number;
+  isProcessed: boolean;
   timestamp: number;
   transactionHash: string;
 }
@@ -115,28 +115,34 @@ const CrossChainBridge: React.FC<CrossChainBridgeProps> = ({ className = '' }) =
     return CHAIN_CONFIGS[chainId as keyof typeof CHAIN_CONFIGS]?.symbol || 'UNK';
   };
 
-  const getStatusText = (status: number) => {
-    switch (status) {
-      case 0: return 'Pending';
-      case 1: return 'Processing';
-      case 2: return 'Completed';
-      case 3: return 'Failed';
-      default: return 'Unknown';
+  const getStatusText = (isProcessed: boolean, transactionHash: string) => {
+    if (isProcessed && transactionHash) {
+      return 'Completed';
+    } else if (isProcessed) {
+      return 'Processing';
+    } else {
+      return 'Pending';
     }
   };
 
-  const getStatusColor = (status: number) => {
-    switch (status) {
-      case 0: return 'bg-yellow-100 text-yellow-800';
-      case 1: return 'bg-blue-100 text-blue-800';
-      case 2: return 'bg-green-100 text-green-800';
-      case 3: return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+  const getStatusColor = (isProcessed: boolean, transactionHash: string) => {
+    if (isProcessed && transactionHash) {
+      return 'bg-green-100 text-green-800';
+    } else if (isProcessed) {
+      return 'bg-blue-100 text-blue-800';
+    } else {
+      return 'bg-yellow-100 text-yellow-800';
     }
   };
 
   const formatTime = (timestamp: number) => {
-    return new Date(timestamp * 1000).toLocaleString();
+    if (!timestamp || timestamp === 0) {
+      return 'Unknown';
+    }
+    // If timestamp is already in milliseconds (very large number), use as is
+    // If timestamp is in seconds (smaller number), multiply by 1000
+    const timestampMs = timestamp > 1000000000000 ? timestamp : timestamp * 1000;
+    return new Date(timestampMs).toLocaleString();
   };
 
   const formatAmount = (amount: string) => {
@@ -260,8 +266,8 @@ const CrossChainBridge: React.FC<CrossChainBridgeProps> = ({ className = '' }) =
                   <div className="flex-1">
                     <div className="flex items-center space-x-4 mb-2">
                       <span className="text-lg font-semibold text-gray-900">Request #{request.id}</span>
-                      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(request.status)}`}>
-                        {getStatusText(request.status)}
+                      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(request.isProcessed, request.transactionHash)}`}>
+                        {getStatusText(request.isProcessed, request.transactionHash)}
                       </span>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
@@ -284,16 +290,24 @@ const CrossChainBridge: React.FC<CrossChainBridgeProps> = ({ className = '' }) =
                     </div>
                   </div>
                   {request.transactionHash && (
-                    <a
-                      href={contractService.getExplorerUrl(request.transactionHash)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-700 ml-4"
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                      </svg>
-                    </a>
+                    <div className="flex items-center space-x-2">
+                      <a
+                        href={contractService.getExplorerUrl(request.transactionHash)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-700"
+                        title="View transaction on Somnia Explorer"
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      </a>
+                      {request.isProcessed && (
+                        <div className="text-xs text-green-600 font-medium">
+                          ✓ Bridged to {getChainName(request.targetChain)}
+                        </div>
+                      )}
+                    </div>
                   )}
                 </div>
               </div>
