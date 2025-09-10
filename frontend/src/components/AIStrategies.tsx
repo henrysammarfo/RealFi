@@ -119,7 +119,7 @@ const AIStrategies: React.FC<AIStrategiesProps> = ({ className = '' }) => {
     try {
       const userStrategiesData = await contractService.getUserActiveStrategies(account);
       // For now, we'll use the basic data and add performance tracking later
-      const strategiesWithPerformance = userStrategiesData.map(strategy => ({
+      const strategiesWithPerformance = userStrategiesData.map((strategy: any) => ({
         ...strategy,
         endTime: strategy.startTime + (30 * 24 * 60 * 60), // Add 30 days to start time as placeholder
         expectedReturn: '0.0', // Will be updated when we get strategy details

@@ -55,8 +55,8 @@ const CrossChainBridge: React.FC<CrossChainBridgeProps> = ({ className = '' }) =
               amount: request[2].toString(),
               sourceChain: Number(request[3]),
               targetChain: Number(request[4]),
-              status: Number(request[5]),
-              timestamp: Number(request[6]),
+              timestamp: Number(request[5]),
+              isProcessed: request[6],
               transactionHash: request[7] || ''
             });
           }
