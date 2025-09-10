@@ -52,23 +52,33 @@ const UserProfile: React.FC<UserProfileProps> = ({ className = '' }) => {
     try {
       setLoading(true);
       
-      // Get user profile data
-      const userData = await contractService.getUserData(account);
-      setUserData(userData);
-      setIsRegistered(true);
+      // First check if user is registered
+      const registered = await contractService.isUserRegistered(account);
       
-      // Get vault position to show actual deposits
-      const vaultPosition = await contractService.getUserPosition(account);
-      if (vaultPosition && vaultPosition.depositedAmount !== '0.0') {
-        setUserData(prev => prev ? {
-          ...prev,
-          totalDeposits: vaultPosition.depositedAmount
-        } : null);
+      if (registered) {
+        // Get user profile data
+        const userData = await contractService.getUserData(account);
+        setUserData(userData);
+        setIsRegistered(true);
+        
+        // Get vault position to show actual deposits
+        const vaultPosition = await contractService.getUserPosition(account);
+        if (vaultPosition && vaultPosition.depositedAmount !== '0.0') {
+          setUserData(prev => prev ? {
+            ...prev,
+            totalDeposits: vaultPosition.depositedAmount
+          } : null);
+        }
+      } else {
+        // User not registered
+        setIsRegistered(false);
+        setUserData(null);
+        console.log('User not registered yet');
       }
     } catch (error: any) {
-      // User not registered
+      console.error('Error checking user registration:', error);
       setIsRegistered(false);
-      console.log('User not registered yet');
+      setUserData(null);
     } finally {
       setLoading(false);
     }

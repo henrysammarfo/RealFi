@@ -70,7 +70,7 @@ contract YieldVault is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reent
     uint256 public nextBattleId;
     uint256 public totalVaultValue;
     uint256 public totalYieldDistributed;
-    uint256 public constant YIELD_RATE = 50; // 50% APY for testing
+    uint256 public constant YIELD_RATE = 100; // 100% APY for new platform
     uint256 public constant BATTLE_DURATION = 1 days; // Reduced from 7 days to 1 day
     uint256 public constant MIN_DEPOSIT = 0.01 ether;
     uint256 public constant MAX_DEPOSIT = 100 ether;
@@ -117,7 +117,7 @@ contract YieldVault is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reent
         uint256 _entryFee,
         uint256 _maxParticipants,
         uint256 _duration
-    ) external {
+    ) external onlyOwner {
         require(_entryFee >= MIN_ENTRY_FEE && _entryFee <= MAX_ENTRY_FEE, "Invalid entry fee");
         require(_maxParticipants > 0 && _maxParticipants <= DEFAULT_MAX_PARTICIPANTS, "Invalid max participants");
         require(_duration > 0 && _duration <= 30 days, "Invalid duration");

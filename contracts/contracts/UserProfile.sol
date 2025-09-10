@@ -224,6 +224,15 @@ contract UserProfile is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reen
     }
     
     /**
+     * @dev Check if user is registered
+     * @param _user The user address
+     * @return True if user is registered
+     */
+    function isUserRegistered(address _user) external view returns (bool) {
+        return isRegistered[_user];
+    }
+
+    /**
      * @dev Get user data
      * @param _user The user address
      * @return username The user's username

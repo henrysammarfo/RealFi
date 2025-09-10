@@ -42,16 +42,11 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
   const [joinLoading, setJoinLoading] = useState(false);
   const [withdrawLoading, setWithdrawLoading] = useState(false);
   const [claimLoading, setClaimLoading] = useState(false);
-  const [createLoading, setCreateLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [depositAmount, setDepositAmount] = useState('');
   const [selectedBattle, setSelectedBattle] = useState<number | null>(null);
   const [showJoinModal, setShowJoinModal] = useState(false);
-  const [battleName, setBattleName] = useState('');
-  const [entryFee, setEntryFee] = useState('');
-  const [maxParticipants, setMaxParticipants] = useState(10);
-  const [duration, setDuration] = useState(24);
   const [battleWinners, setBattleWinners] = useState<Map<number, BattleWinner[]>>(new Map());
   const [forceRefresh, setForceRefresh] = useState(0);
 
@@ -125,35 +120,6 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
     }
   };
 
-  const handleCreateBattle = async () => {
-    if (!battleName || !entryFee) {
-      setError('Please fill in all fields');
-      return;
-    }
-
-    try {
-      setCreateLoading(true);
-      setError(null);
-      setSuccess(null);
-
-      const tx = await contractService.createBattle(battleName, entryFee, maxParticipants, duration);
-      const receipt = await contractService.waitForTransaction(tx.hash);
-      
-      setSuccess(`Battle created successfully! Transaction: ${receipt.hash}`);
-      setBattleName('');
-      setEntryFee('');
-      setMaxParticipants(10);
-      setDuration(24);
-      
-      // Reload battles
-      await loadBattles();
-    } catch (error: any) {
-      console.error('Failed to create battle:', error);
-      setError(error.message || 'Failed to create battle');
-    } finally {
-      setCreateLoading(false);
-    }
-  };
 
   const handleJoinBattle = async () => {
     if (!selectedBattle || !depositAmount) {
@@ -430,68 +396,31 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
         </div>
       )}
 
-      {/* Create Battle */}
+      {/* Admin Battle Info */}
       <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Create New Battle</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Battle Name</label>
-            <input
-              type="text"
-              value={battleName}
-              onChange={(e) => setBattleName(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter battle name"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Entry Fee (RFT)</label>
-            <input
-              type="number"
-              value={entryFee}
-              onChange={(e) => setEntryFee(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="0.0"
-              step="0.1"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Max Participants</label>
-            <input
-              type="number"
-              value={maxParticipants}
-              onChange={(e) => setMaxParticipants(Number(e.target.value))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              min="2"
-              max="100"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Duration (hours)</label>
-            <input
-              type="number"
-              value={duration}
-              onChange={(e) => setDuration(Number(e.target.value))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              min="1"
-              max="168"
-            />
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Yield Battles</h3>
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <h4 className="text-sm font-medium text-blue-800">Battles Created by Admin</h4>
+              <p className="text-sm text-blue-700 mt-1">
+                Yield battles are created by the platform admin. Check the "Active Battles" section below to join available battles and compete for yield rewards.
+              </p>
+            </div>
           </div>
         </div>
-        <button
-          onClick={handleCreateBattle}
-          disabled={createLoading || !battleName || !entryFee}
-          className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {createLoading ? 'Creating...' : 'Create Battle'}
-        </button>
       </div>
 
       {/* Regular Deposit */}
       <div className="bg-white rounded-lg shadow p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Regular Deposit</h3>
         <p className="text-sm text-gray-600 mb-4">
-          Deposit RFT tokens to earn 5% APY. Minimum: 0.01 RFT | Maximum: 100 RFT
+          Deposit RFT tokens to earn 100% APY. Minimum: 0.01 RFT | Maximum: 100 RFT
         </p>
         <div className="flex space-x-4">
           <input

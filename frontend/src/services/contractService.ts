@@ -159,6 +159,13 @@ class ContractServiceClass implements ContractService {
   }
 
   // UserProfile methods
+  async isUserRegistered(address: string): Promise<boolean> {
+    const contract = this.getContract('UserProfile');
+    if (!contract) throw new Error('UserProfile contract not available');
+    
+    return await contract.isUserRegistered(address);
+  }
+
   async getUserData(address: string) {
     const contract = this.getContract('UserProfile');
     if (!contract) throw new Error('UserProfile contract not available');
