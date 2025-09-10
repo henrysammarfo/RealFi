@@ -6,6 +6,19 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
+interface IUserProfile {
+    function getUserData(address _user) external view returns (
+        string memory username,
+        uint256 registrationTime,
+        uint256 totalDeposits,
+        uint256 totalWithdrawals,
+        uint256 battlesJoined,
+        uint256 battlesWon,
+        uint256 reputationScore,
+        bool isActive
+    );
+}
+
 /**
  * @title Leaderboard
  * @dev Manages real-time leaderboards for RealFi DeFi platform
@@ -256,7 +269,26 @@ contract Leaderboard is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reen
         for (uint256 i = 0; i < actualCount; i++) {
             users[i] = rankedUsers[i];
             scores[i] = userScores[rankedUsers[i]].totalScore;
-            usernames[i] = userScores[rankedUsers[i]].username;
+            
+            // Try to get username from UserProfile contract
+            if (userProfileContract != address(0)) {
+                try IUserProfile(userProfileContract).getUserData(rankedUsers[i]) returns (
+                    string memory username,
+                    uint256,
+                    uint256,
+                    uint256,
+                    uint256,
+                    uint256,
+                    uint256,
+                    bool
+                ) {
+                    usernames[i] = username;
+                } catch {
+                    usernames[i] = userScores[rankedUsers[i]].username; // Fallback to stored username
+                }
+            } else {
+                usernames[i] = userScores[rankedUsers[i]].username; // Fallback to stored username
+            }
         }
     }
     

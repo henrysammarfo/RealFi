@@ -160,6 +160,11 @@
       "address": "0xC973ca43A057ED2437B795752126015ae94c8541",
       "txHash": "0x1c03b7055602fe05be731f72e5910afa3fc769e08f339b60dfa79d63e8434da9",
       "kind": "uups"
+    },
+    {
+      "address": "0xf7f949EDc138844b78d7AB5404313f7465a6bAAB",
+      "txHash": "0x1e098440609d6f5953705b480ed7231e80f432c538792b777d57f36dbb7552f6",
+      "kind": "uups"
     }
   ],
   "impls": {
@@ -4060,6 +4065,293 @@
               }
             ],
             "numberOfBytes": "160"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.ReentrancyGuard": [
+            {
+              "contract": "ReentrancyGuardUpgradeable",
+              "label": "_status",
+              "type": "t_uint256",
+              "src": "@openzeppelin\\contracts-upgradeable\\utils\\ReentrancyGuardUpgradeable.sol:43",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "b0f513aa94acd7aad5912d2a9ec4d09a0286404fe0b998c150d2a3579b6252cd": {
+      "address": "0xf4043deFb2c2b3f4f1e6f51792a970717cdB2394",
+      "txHash": "0xd51b4780ac7d7698ef920c554591630650bd0ed3a4fd9642faf344ff1aca308c",
+      "layout": {
+        "solcVersion": "0.8.22",
+        "storage": [
+          {
+            "label": "userScores",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_mapping(t_address,t_struct(UserScore)1614_storage)",
+            "contract": "Leaderboard",
+            "src": "contracts\\Leaderboard.sol:55"
+          },
+          {
+            "label": "battleLeaderboards",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_mapping(t_uint256,t_struct(BattleLeaderboard)1630_storage)",
+            "contract": "Leaderboard",
+            "src": "contracts\\Leaderboard.sol:56"
+          },
+          {
+            "label": "isRegistered",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_address,t_bool)",
+            "contract": "Leaderboard",
+            "src": "contracts\\Leaderboard.sol:57"
+          },
+          {
+            "label": "rankedUsers",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_array(t_address)dyn_storage",
+            "contract": "Leaderboard",
+            "src": "contracts\\Leaderboard.sol:59"
+          },
+          {
+            "label": "yieldVaultContract",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_address",
+            "contract": "Leaderboard",
+            "src": "contracts\\Leaderboard.sol:60"
+          },
+          {
+            "label": "userProfileContract",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_address",
+            "contract": "Leaderboard",
+            "src": "contracts\\Leaderboard.sol:61"
+          },
+          {
+            "label": "totalUsers",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_uint256",
+            "contract": "Leaderboard",
+            "src": "contracts\\Leaderboard.sol:63"
+          },
+          {
+            "label": "lastUpdateTime",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_uint256",
+            "contract": "Leaderboard",
+            "src": "contracts\\Leaderboard.sol:64"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)73_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)13_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(ReentrancyGuardStorage)226_storage": {
+            "label": "struct ReentrancyGuardUpgradeable.ReentrancyGuardStorage",
+            "members": [
+              {
+                "label": "_status",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_array(t_address)dyn_storage": {
+            "label": "address[]",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(UserScore)1614_storage)": {
+            "label": "mapping(address => struct Leaderboard.UserScore)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(BattleLeaderboard)1630_storage)": {
+            "label": "mapping(uint256 => struct Leaderboard.BattleLeaderboard)",
+            "numberOfBytes": "32"
+          },
+          "t_string_storage": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_struct(BattleLeaderboard)1630_storage": {
+            "label": "struct Leaderboard.BattleLeaderboard",
+            "members": [
+              {
+                "label": "battleId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "userScores",
+                "type": "t_mapping(t_address,t_uint256)",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "hasScore",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "participants",
+                "type": "t_array(t_address)dyn_storage",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "isActive",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "4"
+              }
+            ],
+            "numberOfBytes": "160"
+          },
+          "t_struct(UserScore)1614_storage": {
+            "label": "struct Leaderboard.UserScore",
+            "members": [
+              {
+                "label": "user",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "username",
+                "type": "t_string_storage",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "totalScore",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "yieldScore",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "battleScore",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "reputationScore",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "lastUpdated",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "isActive",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
           }
         },
         "namespaces": {

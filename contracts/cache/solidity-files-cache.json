@@ -1102,8 +1102,8 @@
       ]
     },
     "C:\\Users\\ez\\Desktop\\RealFi\\contracts\\contracts\\Leaderboard.sol": {
-      "lastModificationDate": 1757444833906,
-      "contentHash": "cb2c287f462dadf6db3ad53065d03025",
+      "lastModificationDate": 1757500219629,
+      "contentHash": "829eea0b01524d5cdcfa8175e2ef6dd2",
       "sourceName": "contracts/Leaderboard.sol",
       "solcConfig": {
         "version": "0.8.22",
@@ -1140,6 +1140,7 @@
         "^0.8.22"
       ],
       "artifacts": [
+        "IUserProfile",
         "Leaderboard"
       ]
     }
