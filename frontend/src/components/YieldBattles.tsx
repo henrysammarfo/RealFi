@@ -53,14 +53,16 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
   const [duration, setDuration] = useState(24);
   const [battleWinners, setBattleWinners] = useState<Map<number, BattleWinner[]>>(new Map());
 
-  useEffect(() => {
-    if (isConnected && account) {
-      // Refresh contracts to ensure we're using the latest addresses
-      contractService.refreshContracts();
-      loadBattles();
-      loadUserPosition();
+  const loadUserPosition = useCallback(async () => {
+    if (!account) return;
+
+    try {
+      const position = await contractService.getUserPosition(account);
+      setUserPosition(position);
+    } catch (error: any) {
+      console.error('Failed to load user position:', error);
     }
-  }, [isConnected, account, loadUserPosition]);
+  }, [account]);
 
   const loadBattles = async () => {
     try {
@@ -97,16 +99,14 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
     }
   };
 
-  const loadUserPosition = useCallback(async () => {
-    if (!account) return;
-
-    try {
-      const position = await contractService.getUserPosition(account);
-      setUserPosition(position);
-    } catch (error: any) {
-      console.error('Failed to load user position:', error);
+  useEffect(() => {
+    if (isConnected && account) {
+      // Refresh contracts to ensure we're using the latest addresses
+      contractService.refreshContracts();
+      loadBattles();
+      loadUserPosition();
     }
-  }, [account]);
+  }, [isConnected, account, loadUserPosition]);
 
   const loadBattleWinners = async (battleId: number) => {
     try {
