@@ -1,5 +1,7 @@
 import React from 'react';
 import { useWeb3 } from '../hooks/useWeb3';
+import { getErrorMessage } from '../utils/rpcUtils';
+import RpcErrorHelp from './RpcErrorHelp';
 
 interface WalletConnectProps {
   className?: string;
@@ -73,9 +75,12 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ className = '' }) => {
         </button>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-            {error}
-          </div>
+          <>
+            <RpcErrorHelp error={error} onRetry={handleConnect} />
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+              <p className="text-red-600 text-sm">{getErrorMessage(error)}</p>
+            </div>
+          </>
         )}
 
         <div className="text-sm text-gray-500 text-center max-w-md">
@@ -117,7 +122,10 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ className = '' }) => {
 
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-            {error}
+            <p className="text-red-600 text-sm">{getErrorMessage(error)}</p>
+            <p className="text-red-500 text-xs mt-2">
+              If this error persists, try refreshing the page or resetting your MetaMask account.
+            </p>
           </div>
         )}
       </div>
