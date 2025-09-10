@@ -1,14 +1,20 @@
 // RealFi DeFi Platform Contract Configuration
 // All addresses are live on Somnia Testnet (Chain ID: 50312)
 
-export const CONTRACT_ADDRESSES = {
-  RealFiToken: process.env.REACT_APP_REALFI_TOKEN_ADDRESS || '0x7941e8df64Ce12751e8823A058ebE9872371eFAc',
-  UserProfile: process.env.REACT_APP_USER_PROFILE_ADDRESS || '0x6C76a75860F150DC1A1fD3b369Dde113De02aD55',
-  YieldVault: process.env.REACT_APP_YIELD_VAULT_ADDRESS || '0x34F50ebC45BAeEdA521652280FbfF294E39E896D',
-  Leaderboard: process.env.REACT_APP_LEADERBOARD_ADDRESS || '0x5D3235c4eB39f5c3729e75932D62E40f77D8e70f',
-  CrossChainBridge: process.env.REACT_APP_CROSS_CHAIN_BRIDGE_ADDRESS || '0x9F54700Ae37615C4D751FEE27138A1Cc4276e43d',
-  AIStrategy: process.env.REACT_APP_AI_STRATEGY_ADDRESS || '0x72A2dF456B5BF22A87BB56cC08BAf3037250cd01',
-};
+// Function to get contract addresses dynamically (avoids module caching issues)
+export function getContractAddresses() {
+  return {
+    RealFiToken: process.env.REACT_APP_REALFI_TOKEN_ADDRESS || '0x7941e8df64Ce12751e8823A058ebE9872371eFAc',
+    UserProfile: process.env.REACT_APP_USER_PROFILE_ADDRESS || '0x6C76a75860F150DC1A1fD3b369Dde113De02aD55',
+    YieldVault: process.env.REACT_APP_YIELD_VAULT_ADDRESS || '0x34F50ebC45BAeEdA521652280FbfF294E39E896D',
+    Leaderboard: process.env.REACT_APP_LEADERBOARD_ADDRESS || '0x5D3235c4eB39f5c3729e75932D62E40f77D8e70f',
+    CrossChainBridge: process.env.REACT_APP_CROSS_CHAIN_BRIDGE_ADDRESS || '0x9F54700Ae37615C4D751FEE27138A1Cc4276e43d',
+    AIStrategy: process.env.REACT_APP_AI_STRATEGY_ADDRESS || '0x72A2dF456B5BF22A87BB56cC08BAf3037250cd01',
+  };
+}
+
+// Keep the original export for backward compatibility
+export const CONTRACT_ADDRESSES = getContractAddresses();
 
 // Network configuration for MetaMask
 export const NETWORK_CONFIG = {

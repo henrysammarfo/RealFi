@@ -328,13 +328,18 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
               Refresh
             </button>
             <button
-              onClick={() => {
+              onClick={async () => {
                 console.log('🔄 Force refreshing contracts and page...');
-                contractService.refreshContracts();
-                setForceRefresh(prev => prev + 1);
-                setTimeout(() => {
+                try {
+                  await contractService.forceReinitialize();
+                  setForceRefresh(prev => prev + 1);
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 1000);
+                } catch (error) {
+                  console.error('Failed to force reinitialize:', error);
                   window.location.reload();
-                }, 1000);
+                }
               }}
               className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
             >

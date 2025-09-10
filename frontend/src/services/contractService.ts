@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { CONTRACT_ADDRESSES, CONTRACT_ABIS } from '../config/contracts';
+import { CONTRACT_ADDRESSES, CONTRACT_ABIS, getContractAddresses } from '../config/contracts';
 
 export interface ContractService {
   provider: ethers.Provider | null;
@@ -22,14 +22,23 @@ class ContractServiceClass implements ContractService {
     this.account = account;
     this.chainId = Number((await provider.getNetwork()).chainId);
     
-    // Initialize all contracts
+    console.log('🔧 ContractService initializing with addresses:', CONTRACT_ADDRESSES);
+    
+    // Clear any existing contracts and initialize fresh
+    this.contracts.clear();
     this.initializeContracts();
+    
+    console.log('✅ ContractService initialized with contracts:', Array.from(this.contracts.keys()));
   }
 
   private initializeContracts() {
     if (!this.signer) return;
 
-    Object.entries(CONTRACT_ADDRESSES).forEach(([name, address]) => {
+    // Use dynamic function to get fresh addresses
+    const addresses = getContractAddresses();
+    console.log('🔧 Initializing contracts with addresses:', addresses);
+
+    Object.entries(addresses).forEach(([name, address]) => {
       if (address && CONTRACT_ABIS[name as keyof typeof CONTRACT_ABIS]) {
         const contract = new ethers.Contract(
           address,
@@ -37,19 +46,31 @@ class ContractServiceClass implements ContractService {
           this.signer!
         );
         this.contracts.set(name, contract);
+        console.log(`✅ Initialized ${name} contract at:`, address);
       }
     });
   }
 
   refreshContracts() {
     console.log('🔄 Refreshing contracts...');
-    console.log('Current contract addresses:', CONTRACT_ADDRESSES);
+    const addresses = getContractAddresses();
+    console.log('Current contract addresses:', addresses);
     
     this.contracts.clear();
     this.initializeContracts();
     
     console.log('✅ Contracts refreshed');
     console.log('Contract instances:', Array.from(this.contracts.keys()));
+  }
+
+  async forceReinitialize() {
+    if (!this.provider || !this.signer || !this.account) {
+      console.error('❌ Cannot reinitialize: missing provider, signer, or account');
+      return;
+    }
+    
+    console.log('🔄 Force reinitializing ContractService...');
+    await this.initialize(this.provider, this.signer, this.account);
   }
 
   getContract(contractName: keyof typeof CONTRACT_ADDRESSES): ethers.Contract | null {
