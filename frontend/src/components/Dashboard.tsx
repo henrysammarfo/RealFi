@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useWeb3 } from '../hooks/useWeb3';
 import { contractService } from '../services/contractService';
 import UserProfile from './UserProfile';
@@ -20,7 +20,7 @@ interface DashboardStats {
 }
 
 const Dashboard: React.FC = () => {
-  const { isConnected, isCorrectNetwork, account, balance } = useWeb3();
+  const { isConnected, isCorrectNetwork, account } = useWeb3();
   const [activeTab, setActiveTab] = useState<'profile' | 'battles' | 'leaderboard' | 'bridge' | 'ai'>('profile');
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(false);
@@ -33,11 +33,14 @@ const Dashboard: React.FC = () => {
     { id: 'ai', name: 'AI Strategies', icon: '🤖', description: 'AI-powered investment strategies' },
   ] as const;
 
-  const loadDashboardStats = async () => {
+  const loadDashboardStats = useCallback(async () => {
     if (!isConnected || !account) return;
 
     try {
       setLoading(true);
+      
+      // Refresh contracts to ensure we're using the latest addresses
+      contractService.refreshContracts();
 
       // Load user profile data
       const userData = await contractService.getUserData(account);
@@ -46,7 +49,7 @@ const Dashboard: React.FC = () => {
       const vaultPosition = await contractService.getUserPosition(account);
       
       // Load token balance
-      const tokenBalance = await contractService.getTokenBalance(account);
+      await contractService.getTokenBalance(account);
       
       // Load leaderboard rank
       const userRank = await contractService.getUserRank(account);
@@ -69,13 +72,13 @@ const Dashboard: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [isConnected, account]);
 
   useEffect(() => {
     if (isConnected && isCorrectNetwork) {
       loadDashboardStats();
     }
-  }, [isConnected, isCorrectNetwork, account]);
+  }, [isConnected, isCorrectNetwork, loadDashboardStats]);
 
   const renderContent = () => {
     if (!isConnected) {

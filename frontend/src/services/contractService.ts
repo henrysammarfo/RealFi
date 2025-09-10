@@ -41,6 +41,11 @@ class ContractServiceClass implements ContractService {
     });
   }
 
+  refreshContracts() {
+    this.contracts.clear();
+    this.initializeContracts();
+  }
+
   getContract(contractName: keyof typeof CONTRACT_ADDRESSES): ethers.Contract | null {
     return this.contracts.get(contractName) || null;
   }

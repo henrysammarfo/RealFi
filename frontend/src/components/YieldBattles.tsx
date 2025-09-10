@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useWeb3 } from '../hooks/useWeb3';
 import { contractService } from '../services/contractService';
 
@@ -55,10 +55,12 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
 
   useEffect(() => {
     if (isConnected && account) {
+      // Refresh contracts to ensure we're using the latest addresses
+      contractService.refreshContracts();
       loadBattles();
       loadUserPosition();
     }
-  }, [isConnected, account]);
+  }, [isConnected, account, loadUserPosition]);
 
   const loadBattles = async () => {
     try {
@@ -95,7 +97,7 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
     }
   };
 
-  const loadUserPosition = async () => {
+  const loadUserPosition = useCallback(async () => {
     if (!account) return;
 
     try {
@@ -104,7 +106,7 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
     } catch (error: any) {
       console.error('Failed to load user position:', error);
     }
-  };
+  }, [account]);
 
   const loadBattleWinners = async (battleId: number) => {
     try {
