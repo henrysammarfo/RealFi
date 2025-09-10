@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useWeb3 } from '../hooks/useWeb3';
 import { contractService } from '../services/contractService';
+import { debugContractAddresses } from '../utils/debugContracts';
 
 interface Battle {
   battleId: number;
@@ -52,6 +53,7 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
   const [maxParticipants, setMaxParticipants] = useState(10);
   const [duration, setDuration] = useState(24);
   const [battleWinners, setBattleWinners] = useState<Map<number, BattleWinner[]>>(new Map());
+  const [forceRefresh, setForceRefresh] = useState(0);
 
   const loadUserPosition = useCallback(async () => {
     if (!account) return;
@@ -101,6 +103,10 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
 
   useEffect(() => {
     if (isConnected && account) {
+      // Debug contract addresses
+      console.log('🔍 YieldBattles: Checking contract addresses...');
+      debugContractAddresses();
+      
       // Refresh contracts to ensure we're using the latest addresses
       contractService.refreshContracts();
       loadBattles();
@@ -306,8 +312,36 @@ const YieldBattles: React.FC<YieldBattlesProps> = ({ className = '' }) => {
     <div className={`space-y-6 ${className}`}>
       {/* Header */}
       <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Yield Battles</h2>
-        <p className="text-gray-600">Join battles, earn yield, and compete with other users!</p>
+        <div className="flex justify-between items-center mb-4">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">Yield Battles</h2>
+            <p className="text-gray-600">Join battles, earn yield, and compete with other users!</p>
+          </div>
+          <div className="flex space-x-2">
+            <button
+              onClick={() => {
+                loadBattles();
+                loadUserPosition();
+              }}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+            >
+              Refresh
+            </button>
+            <button
+              onClick={() => {
+                console.log('🔄 Force refreshing contracts and page...');
+                contractService.refreshContracts();
+                setForceRefresh(prev => prev + 1);
+                setTimeout(() => {
+                  window.location.reload();
+                }, 1000);
+              }}
+              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+            >
+              Force Refresh
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Error/Success Messages */}

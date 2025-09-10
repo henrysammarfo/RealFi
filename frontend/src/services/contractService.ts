@@ -42,12 +42,24 @@ class ContractServiceClass implements ContractService {
   }
 
   refreshContracts() {
+    console.log('🔄 Refreshing contracts...');
+    console.log('Current contract addresses:', CONTRACT_ADDRESSES);
+    
     this.contracts.clear();
     this.initializeContracts();
+    
+    console.log('✅ Contracts refreshed');
+    console.log('Contract instances:', Array.from(this.contracts.keys()));
   }
 
   getContract(contractName: keyof typeof CONTRACT_ADDRESSES): ethers.Contract | null {
-    return this.contracts.get(contractName) || null;
+    const contract = this.contracts.get(contractName);
+    if (contract) {
+      console.log(`📋 Using ${contractName} contract at address:`, contract.target);
+    } else {
+      console.warn(`⚠️ No contract found for ${contractName}`);
+    }
+    return contract || null;
   }
 
   async getContractReadOnly(contractName: keyof typeof CONTRACT_ADDRESSES): Promise<ethers.Contract | null> {
